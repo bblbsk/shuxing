@@ -6,6 +6,14 @@ import javax.swing.UIManager;
 
 import com.daojia.toSql.jframe.SqlJFrame;
 
+
+/**
+ * @Title: SqlStartLoader.java
+ * @Description:启动类
+ * @Author：daojia
+ * @CreateTime：2018年6月10日上午9:23:33
+ * @version v1.0
+ */
 public class SqlStartLoader {
 	
 	public static void main(String[] args) {
