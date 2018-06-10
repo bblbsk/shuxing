@@ -1,6 +1,7 @@
 package com.daojia.toSql.jframe;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -13,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +37,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -49,10 +53,19 @@ import com.daojia.toSql.jframe.adapter.JFrameWindowAdapter;
 import com.daojia.toSql.util.Constant;
 import com.daojia.toSql.util.Constant.SQLTableInfo;
 import com.daojia.toSql.util.FileWriterUtils;
+import com.daojia.toSql.util.FiledEnum;
 import com.daojia.toSql.util.JCalenderTextField;
 import com.daojia.toSql.util.XLSReader;
 import com.qt.datapicker.DatePicker;
 
+
+/**
+ * @Title: SqlJFrame.java
+ * @Description:Frame
+ * @Author：daojia
+ * @CreateTime：2018年6月10日上午10:37:29
+ * @version v1.0
+ */
 @SuppressWarnings("serial")
 public class SqlJFrame extends JFrame {
 	private static Logger log = Logger.getLogger(SqlJFrame.class.getName());
@@ -162,22 +175,22 @@ public class SqlJFrame extends JFrame {
 				// 展示数据
 				Sheet sheet = XLSReader.getSheets().get(currSheetIndex);
 				for (int i = 0; i < sheet.getLastRowNum(); i++) {
-					Vector<String> rowData = new Vector<String>();
+					Vector<String> vector = new Vector<String>();
 					Row row = sheet.getRow(i);
 					for (int j = 0; j < row.getLastCellNum(); j++) {
-						// 非表头行，序号列需要转成整形
-						if (i > 0 && j == 0) {
-							rowData.add(Double.valueOf(row.getCell(j).toString()).intValue() + "");
+						// 非表头行，序号列或字段长度需要转成整形
+						if (i > 0 && (j == 0 || j == 4)) {
+							vector.add(Double.valueOf(row.getCell(j).toString()).intValue() + "");
 						} else {
-							rowData.add(row.getCell(j).toString());
+							vector.add(row.getCell(j).toString());
 						}
 					}
 					if (i == 0) {// 表头
-						SQLTableInfo.TABLE_COLUMN_NAMES = rowData.toArray(new String[]{});
+						SQLTableInfo.TABLE_COLUMN_NAMES = vector.toArray(new String[]{});
 						tableModel.setColumnIdentifiers(SQLTableInfo.TABLE_COLUMN_NAMES);
 					} else {
 						// 表体
-						tableModel.addRow(rowData);
+						tableModel.addRow(vector);
 					}
 				}
 				
@@ -362,7 +375,7 @@ public class SqlJFrame extends JFrame {
 				SqlGenerator sg = new SqlGenerator();
 				
 				// 生成sql
-				cb.setText(sg.generatorByTableData(table));
+				cb.setText(sg.generatorByTableData(currSheetIndex, table));
 				message[1] = cb;
 
 				// Options
@@ -426,10 +439,9 @@ public class SqlJFrame extends JFrame {
 				for (int i = 0; i < table.getColumnCount(); i++) {
 					clone.add(table.getValueAt(selectedRow, i).toString());
 				}
-				tableModel.addRow(clone);
+				tableModel.insertRow(++selectedRow, clone);
 				// 更新序号
-				int newNo = table.getRowCount();
-				table.setValueAt(newNo, table.getRowCount() - 1, 0);
+				updateRowNum();
 			}
 		});
 		copySelect.setFont(new Font("微软雅黑", Font.PLAIN, 14));
@@ -461,6 +473,8 @@ public class SqlJFrame extends JFrame {
 					tableModel.removeRow(rowId);
 				}
 				tableModel.setRowCount(table.getRowCount());
+				// 更新序号
+				updateRowNum();
 			}
 		});
 		btnNewButton_1.setFont(new Font("微软雅黑", Font.PLAIN, 14));
@@ -474,7 +488,14 @@ public class SqlJFrame extends JFrame {
 		// 添加一条
 		addRow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tableModel.addRow(new Vector<Object>());
+				// 在选中行处添加一行，若没有选中行则在第一行添加
+				int selectedRow = table.getSelectedRow();
+				if (selectedRow == -1) {
+					tableModel.insertRow(0, new Vector<Object>());
+				} else {
+					tableModel.insertRow(++selectedRow, new Vector<Object>());
+				}
+				
 			}
 		});
 		
@@ -487,108 +508,110 @@ public class SqlJFrame extends JFrame {
 		settingPanel.setLayout(null);
 		
 		JComboBox<String> dbConnect_db_type = new JComboBox<String>();
-		dbConnect_db_type.setBounds(289, 52, 174, 45);
+		dbConnect_db_type.setBounds(289, 34, 174, 45);
 		dbConnect_db_type.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		dbConnect_db_type.setModel(new DefaultComboBoxModel<String>(new String[] {"Mysql", "Oracle", "SqlServer"}));
 		settingPanel.add(dbConnect_db_type);
 		
-		JLabel label = new JLabel("\u6570\u636E\u5E93\u7C7B\u578B\uFF1A");
-		label.setBounds(140, 52, 141, 45);
+		JLabel lblNewLabel = new JLabel("预读取配置文件中的配置");
+		lblNewLabel.setForeground(Color.RED);
+		lblNewLabel.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		lblNewLabel.setBounds(140, 89, 141, 26);
+		settingPanel.add(lblNewLabel);
+		
+		JLabel lblNewLabel_4 = new JLabel("若修改了Excel文件中的列顺序，则需要这里进行设置，并保存");
+		lblNewLabel_4.setForeground(Color.RED);
+		lblNewLabel_4.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		lblNewLabel_4.setBounds(140, 125, 375, 26);
+		settingPanel.add(lblNewLabel_4);
+		
+		JLabel label = new JLabel("数据库类型：");
+		label.setBounds(140, 34, 141, 45);
 		label.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		settingPanel.add(label);
 		
 		JLabel lblip = new JLabel("字段描述：");
-		lblip.setBounds(142, 171, 100, 45);
+		lblip.setBounds(140, 161, 100, 45);
 		lblip.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		settingPanel.add(lblip);
 		
 		JLabel label_1 = new JLabel("字段类型：");
-		label_1.setBounds(142, 348, 100, 45);
+		label_1.setBounds(140, 340, 100, 45);
 		label_1.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		settingPanel.add(label_1);
 		
-		final JComboBox<String> dbConnect_db_name = new JComboBox<String>(SQLTableInfo.INDEX_COMBOBOXDATA);
-		dbConnect_db_name.setBounds(291, 171, 105, 45);
-		dbConnect_db_name.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		settingPanel.add(dbConnect_db_name);
-		
-		final JButton connectCheck = new JButton("保存配置");
-		connectCheck.setBounds(360, 519, 155, 45);
-		connectCheck.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//TODO
-				JOptionPane.showMessageDialog(null, "已保存!");
-			}
-		});
-		connectCheck.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		settingPanel.add(connectCheck);
-		
-		JLabel lblmysql = new JLabel("\u6CE8\uFF1A\u6682\u652F\u6301Mysql\uFF0C\u8BE5\u9879\u53EF\u5FFD\u7565");
-		lblmysql.setBounds(531, 58, 155, 37);
+		JLabel lblmysql = new JLabel("注：暂支持Mysql，该项可忽略");
+		lblmysql.setBounds(531, 40, 155, 37);
 		lblmysql.setForeground(Color.RED);
 		lblmysql.setFont(new Font("微软雅黑", Font.PLAIN, 10));
 		settingPanel.add(lblmysql);
 		
 		JLabel label_7 = new JLabel("字段名称：");
-		label_7.setBounds(142, 255, 100, 45);
+		label_7.setBounds(140, 247, 100, 45);
 		label_7.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		settingPanel.add(label_7);
 		
-		JComboBox<String> comboBox_1 = new JComboBox<String>(SQLTableInfo.INDEX_COMBOBOXDATA);
-		comboBox_1.setBounds(291, 255, 105, 45);
+		JComboBox<String> comboBox_1 = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] {"0", "1", "2","3", "4", "5","6", "7"}));
+		comboBox_1.setBounds(280, 161, 94, 45);
+		comboBox_1.setName(FiledEnum.FIELD_COMMEND.getName());
 		comboBox_1.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		settingPanel.add(comboBox_1);
 		
-		JComboBox<String> comboBox_2 = new JComboBox<String>(SQLTableInfo.INDEX_COMBOBOXDATA);
-		comboBox_2.setBounds(291, 348, 105, 45);
+		JComboBox<String> comboBox_2 = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] {"0", "1", "2","3", "4", "5","6", "7"}));
+		comboBox_2.setBounds(280, 247, 94, 45);
+		comboBox_2.setName(FiledEnum.FILED_NAME.getName());
 		comboBox_2.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		settingPanel.add(comboBox_2);
 		
 		JLabel label_3 = new JLabel("字段长度：");
 		label_3.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		label_3.setBounds(142, 436, 100, 45);
+		label_3.setBounds(140, 420, 100, 45);
 		settingPanel.add(label_3);
 		
-		JComboBox<String> comboBox_3 = new JComboBox<String>(SQLTableInfo.INDEX_COMBOBOXDATA);
+		JComboBox<String> comboBox_3 = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] {"0", "1", "2","3", "4", "5","6", "7"}));
 		comboBox_3.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		comboBox_3.setBounds(291, 436, 105, 45);
+		comboBox_3.setName(FiledEnum.FIELD_TYPE.getName());
+		comboBox_3.setBounds(280, 327, 94, 45);
 		settingPanel.add(comboBox_3);
 		
 		JLabel label_4 = new JLabel("默认值：");
 		label_4.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		label_4.setBounds(445, 171, 100, 45);
+		label_4.setBounds(452, 163, 100, 45);
 		settingPanel.add(label_4);
 		
-		JLabel label_5 = new JLabel("备注：");
-		label_5.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		label_5.setBounds(445, 348, 100, 45);
-		settingPanel.add(label_5);
-		
-		JComboBox<String> comboBox_4 = new JComboBox<String>(SQLTableInfo.INDEX_COMBOBOXDATA);
+		JComboBox<String> comboBox_4 = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] {"0", "1", "2","3", "4", "5","6", "7"}));
 		comboBox_4.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		comboBox_4.setBounds(594, 171, 105, 45);
+		comboBox_4.setBounds(280, 420, 94, 45);
+		comboBox_4.setName(FiledEnum.FIELD_LENGTH.getName());
 		settingPanel.add(comboBox_4);
 		
 		JLabel label_8 = new JLabel("是否为空：");
 		label_8.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		label_8.setBounds(445, 255, 100, 45);
+		label_8.setBounds(452, 247, 100, 45);
 		settingPanel.add(label_8);
 		
-		JComboBox<String> comboBox_5 = new JComboBox<String>(SQLTableInfo.INDEX_COMBOBOXDATA);
+		JComboBox<String> comboBox_5 = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] {"0", "1", "2","3", "4", "5","6", "7"}));
 		comboBox_5.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		comboBox_5.setBounds(594, 255, 105, 45);
+		comboBox_5.setBounds(587, 161, 94, 45);
+		comboBox_5.setName(FiledEnum.FIELD_DEFAULVALUE.getName());
 		settingPanel.add(comboBox_5);
 		
-		JComboBox<String> comboBox_6 = new JComboBox<String>(SQLTableInfo.INDEX_COMBOBOXDATA);
+		JComboBox<String> comboBox_6 = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] {"0", "1", "2","3", "4", "5","6", "7"}));
 		comboBox_6.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		comboBox_6.setBounds(594, 348, 105, 45);
+		comboBox_6.setBounds(587, 247, 94, 45);
+		comboBox_6.setName(FiledEnum.IS_NULL.getName());
 		settingPanel.add(comboBox_6);
 		
-		JLabel lblNewLabel = new JLabel("配置这些元数据在Excel中的哪一列，避免取值异常");
-		lblNewLabel.setForeground(Color.RED);
-		lblNewLabel.setFont(new Font("微软雅黑", Font.PLAIN, 12));
-		lblNewLabel.setBounds(140, 137, 297, 15);
-		settingPanel.add(lblNewLabel);
+		final JButton connectCheck = new JButton("保存配置");
+		connectCheck.setBounds(351, 500, 155, 45);
+		connectCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 将当前的配置，写入枚举对象中，但不持久化
+				updateSettingDateToEnum();
+			}
+		});
+		connectCheck.setFont(new Font("微软雅黑", Font.PLAIN, 14));
+		settingPanel.add(connectCheck);
 		
 		//时间插件
 		datePicker = new JCalenderTextField();
@@ -604,6 +627,144 @@ public class SqlJFrame extends JFrame {
 //		datePicker.setBounds(668, 142, 144, 37);
 //		templatePanel.add(datePicker);
 //		datePicker.setColumns(10);
+		
+		// JTabbedPane标签切换的监听
+		tabbedPane.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
+				int selectedIndex = tabbedPane.getSelectedIndex();
+				switch (selectedIndex) {
+					case 2:// 配置标签页
+						JPanel component = (JPanel) tabbedPane.getComponents()[2];
+						updateSettingData(component.getComponents());
+						break;
+				}
+			}
+		});
 	}
-
+	
+	
+	/**
+	 * @Description:更新序号
+	 * @Method: updateRowNum
+	 * @Author daojia
+	 * @CreateTime 2018年6月10日上午10:58:11
+	 * @throws
+	 */
+	private void updateRowNum(){
+		for (int i = 0; i < table.getRowCount(); i++) {
+			int j = i+1;	//序号
+			table.setValueAt(j, i, 0);
+		}
+	}
+	
+	
+	/**
+	 * @Description:更新配置标签页数据
+	 * @Method: updateSettingData
+	 * @Author daojia
+	 * @CreateTime 2018年6月10日上午11:30:02
+	 * @throws
+	 */
+	@SuppressWarnings("unchecked")
+	public void updateSettingData(Component[] components){
+		for (int i = 0; i < components.length; i++) {
+			if (components[i] instanceof JComboBox) {
+				JComboBox<String> jComboBox = (JComboBox<String>) components[i];
+				if (jComboBox.getName() == null) {
+					continue;
+				}
+				switch(jComboBox.getName()){
+					case "FILED_NAME":
+						jComboBox.setSelectedIndex(FiledEnum.FILED_NAME.getValueIndex());
+						break;
+					case "FIELD_TYPE":
+						jComboBox.setSelectedIndex(FiledEnum.FIELD_TYPE.getValueIndex());
+						break;
+					case "FIELD_LENGTH":
+						jComboBox.setSelectedIndex(FiledEnum.FIELD_LENGTH.getValueIndex());
+						break;
+					case "FIELD_DEFAULVALUE":
+						jComboBox.setSelectedIndex(FiledEnum.FIELD_DEFAULVALUE.getValueIndex());
+						break;
+					case "FIELD_COMMEND":
+						jComboBox.setSelectedIndex(FiledEnum.FIELD_COMMEND.getValueIndex());
+						break;
+					case "IS_NULL":
+						jComboBox.setSelectedIndex(FiledEnum.IS_NULL.getValueIndex());
+						break;
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * @Description:将配置Panel中的值，更新到枚举内存中
+	 * @Method: updateSettingDateToEnum
+	 * @Author daojia
+	 * @CreateTime 2018年6月10日下午12:24:25
+	 * @throws
+	 */
+	@SuppressWarnings("unchecked")
+	private void updateSettingDateToEnum(){
+		// 用于判断是否有相同的编号
+		List<Integer> indexs = new ArrayList<Integer>();
+		Component[] components = settingPanel.getComponents();
+		for (int i = 0; i < components.length; i++) {
+			if (components[i] instanceof JComboBox) {
+				JComboBox<String> jComboBox = (JComboBox<String>) components[i];
+				if (jComboBox.getName() == null) {
+					continue;
+				}
+				// 校验当前index是否重复使用
+				int result = checkIndexRepeat(indexs, Integer.valueOf(jComboBox.getSelectedItem().toString()));
+				if (result > 0) {
+					JOptionPane.showMessageDialog(null, "当前位置：【"+ result +"】重复设置，请修改!");
+					return;
+				}
+				
+				switch(jComboBox.getName()){
+					case "FILED_NAME":
+						FiledEnum.FILED_NAME.setValueIndex(Integer.valueOf(jComboBox.getSelectedItem().toString()));
+						break;
+					case "FIELD_TYPE":
+						FiledEnum.FIELD_TYPE.setValueIndex(Integer.valueOf(jComboBox.getSelectedItem().toString()));
+						break;
+					case "FIELD_LENGTH":
+						FiledEnum.FIELD_LENGTH.setValueIndex(Integer.valueOf(jComboBox.getSelectedItem().toString()));
+						break;
+					case "FIELD_DEFAULVALUE":
+						FiledEnum.FIELD_DEFAULVALUE.setValueIndex(Integer.valueOf(jComboBox.getSelectedItem().toString()));
+						break;
+					case "FIELD_COMMEND":
+						FiledEnum.FIELD_COMMEND.setValueIndex(Integer.valueOf(jComboBox.getSelectedItem().toString()));
+						break;
+					case "IS_NULL":
+						FiledEnum.IS_NULL.setValueIndex(Integer.valueOf(jComboBox.getSelectedItem().toString()));
+						break;
+				}
+			}
+		}
+		JOptionPane.showMessageDialog(null, "已保存!");
+	}
+	
+	
+	/**
+	 * @Description:判断当前index是否已经被使用，通一个index只能用一次
+	 * @Method: checkIndexRepeat
+	 * @ReturnType int
+	 * @Author daojia
+	 * @CreateTime 2018年6月10日下午12:36:24
+	 * @throws
+	 */
+	public int checkIndexRepeat(List<Integer> indexs, int currIndex){
+		if (indexs.contains(currIndex)) {
+			return currIndex;
+		}
+		indexs.add(currIndex);
+		return 0;
+	}
 }

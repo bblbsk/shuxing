@@ -20,7 +20,14 @@ import com.daojia.toSql.util.FiledEnum;
 import com.daojia.toSql.util.GeneratorUtil;
 import com.daojia.toSql.util.XLSReader;
 
-// C:\\Users\\daojia\\Desktop\\数据库设计.xls
+
+/**
+ * @Title: SqlGenerator.java
+ * @Description:语句生成器
+ * @Author：daojia
+ * @CreateTime：2018年6月10日上午10:34:34
+ * @version v1.0
+ */
 public class SqlGenerator {
 
 	public static void main(String[] args) throws IOException {
@@ -51,11 +58,9 @@ public class SqlGenerator {
 	 * @throws
 	 */
 	public String generatorByIndex(int index){
-		Workbook wb;
 		StringBuilder sb = new StringBuilder();
-		wb = XLSReader.getWb();
-		Sheet sheetAt = wb.getSheetAt(index);
-		sb = new StringBuilder(GeneratorUtil.buildCreateTable("table_name"));
+		Sheet sheetAt = XLSReader.getWb().getSheetAt(index);
+		sb = new StringBuilder(GeneratorUtil.buildCreateTable(sheetAt.getSheetName()));
 		for (int i = 1; i < sheetAt.getLastRowNum(); i++) {
 			String generator = generator(sheetAt.getRow(i));
 			sb.append(generator).append(SqlConstant.NEXT_LINE);
@@ -74,9 +79,10 @@ public class SqlGenerator {
 	 * @CreateTime 2018年6月9日下午9:53:03
 	 * @throws
 	 */
-	public String generatorByTableData(JTable jTable){
+	public String generatorByTableData(int index, JTable jTable){
 		StringBuilder sb = new StringBuilder();
-		sb = new StringBuilder(GeneratorUtil.buildCreateTable("table_name"));
+		String sheetName = XLSReader.getSheets().get(index).getSheetName();
+		sb = new StringBuilder(GeneratorUtil.buildCreateTable(sheetName));
 		
 		for (int i = 0; i < jTable.getRowCount(); i++) {
 			Row row = trans2Row(i, jTable);
@@ -176,7 +182,7 @@ public class SqlGenerator {
 	 */
 	public Row trans2Row(int rowIndex, JTable jTable){
 		// 创建临时行
-		Row row = XLSReader.getWb().getSheetAt(0).createRow(0);
+		Row row = XLSReader.getWb().createSheet().createRow(0);
 		for (int i = 0; i < jTable.getColumnCount(); i++) {
 			Cell cell = row.createCell(i, CellType.STRING);
 			Object value = jTable.getValueAt(rowIndex, i);

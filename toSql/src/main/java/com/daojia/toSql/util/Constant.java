@@ -42,17 +42,23 @@ public class Constant {
 	
 	/**
 	 * @Title: FiledOrderConstant.java
-	 * @Description:字段拼接顺序
+	 * @Description:字段拼接顺序，此类不能修改
 	 * @Author：daojia
 	 * @CreateTime：2018年6月7日下午8:03:16
 	 * @version v1.0
 	 */
 	public static class FiledOrderConstant{
+		//字段
 		public static final int FILED_NAME = 1;
+		//类型
 		public static final int FIELD_TYPE = 2;
+		//长度
 		public static final int FIELD_LENGTH = 3;
+		//是否为空
 		public static final int IS_NULL = 4;
+		//默认值
 		public static final int FIELD_DEFAULVALUE = 5;
+		//备注
 		public static final int FIELD_COMMEND = 6;
 	}
 	
@@ -65,12 +71,12 @@ public class Constant {
 	 * @version v1.0
 	 */
 	public static class FiledValueIndexConstant{
-		public static final int FILED_NAME = PropertiesUtils.getIntegerValue("FILED_NAME");
-		public static final int FIELD_TYPE = PropertiesUtils.getIntegerValue("FIELD_TYPE");
-		public static final int FIELD_LENGTH = PropertiesUtils.getIntegerValue("FIELD_LENGTH");
-		public static final int FIELD_DEFAULVALUE = PropertiesUtils.getIntegerValue("FIELD_DEFAULVALUE");
-		public static final int FIELD_COMMEND = PropertiesUtils.getIntegerValue("FIELD_COMMEND");
-		public static final int IS_NULL = PropertiesUtils.getIntegerValue("IS_NULL");
+		public static int FILED_NAME = PropertiesUtils.getIntegerValue("FILED_NAME");
+		public static int FIELD_TYPE = PropertiesUtils.getIntegerValue("FIELD_TYPE");
+		public static int FIELD_LENGTH = PropertiesUtils.getIntegerValue("FIELD_LENGTH");
+		public static int FIELD_DEFAULVALUE = PropertiesUtils.getIntegerValue("FIELD_DEFAULVALUE");
+		public static int FIELD_COMMEND = PropertiesUtils.getIntegerValue("FIELD_COMMEND");
+		public static int IS_NULL = PropertiesUtils.getIntegerValue("IS_NULL");
 	}
 	
 	/**
@@ -95,8 +101,6 @@ public class Constant {
 		public static int IS_NULL = 6;
 		public static int IS_PRIMARY_KEY = 7;
 		
-		// 字段位置可选项
-		public static DefaultComboBoxModel<String> INDEX_COMBOBOXDATA = new DefaultComboBoxModel<String>(new String[] {"0", "1", "2","3", "4", "5","6"});
 		// 字段类型可选择
 		public static DefaultComboBoxModel<String> TYPE_COMBOBOXDATA = new DefaultComboBoxModel<String>(new String[] {"int", "bigint", "varchar", "timestamp","datetime"});
 		// 是否为空，是否主键
