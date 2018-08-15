@@ -83,7 +83,13 @@
 	    <artifactId>msgpack</artifactId>
 	    <version>0.6.12</version>
 	</dependency>
-
+	
+	<!-- beanutils -->
+	<dependency>
+	  <groupId>commons-beanutils</groupId>
+	  <artifactId>commons-beanutils</artifactId>
+	  <version>1.9.3</version>
+	</dependency>
 
   </dependencies>
 </project>
