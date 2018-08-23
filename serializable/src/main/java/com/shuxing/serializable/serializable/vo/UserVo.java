@@ -3,7 +3,10 @@ package com.shuxing.serializable.serializable.vo;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
+import java.io.ObjectStreamField;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +25,12 @@ public class UserVo extends UserParentVo implements Serializable{
 	private transient AnimalVo animal;
 //	public int weight;
 	private transient String phone;
-	public static int gender;	// 性别，默认男，1为女
+	public static Integer gender;	// 性别，默认男，1为女
+	
+//	private static final ObjectStreamField[] serialPersistentFields = {
+//		new ObjectStreamField("name", String.class),
+//		new ObjectStreamField("age", String.class)
+//	};
 	
 	
 	public UserVo(String name, String age, int height, String phone, List<String> hobbies, AnimalVo animal, String race) {
@@ -36,9 +44,9 @@ public class UserVo extends UserParentVo implements Serializable{
 		this.race = race;
 	}
 	
-	public UserVo() {
-		super();
-	}
+//	public UserVo() {
+//		super();
+//	}
 	
 //	public int getWeight() {
 //		return weight;
@@ -93,10 +101,19 @@ public class UserVo extends UserParentVo implements Serializable{
 		setAge("25");
 	}
 	
+//	private Object writeReplace(){
+//		ArrayList<Object> list = new ArrayList<>();
+//		list.add(name); 
+//		list.add(age);
+//		return list;
+//	}
+
+
 	@Override
 	public String toString() {
 		return "UserVo [name=" + name + ", age=" + age + ", height=" + height
-				+ ", hobbies=" + hobbies + "]";
+				+ ", hobbies=" + hobbies + ", animal=" + animal + ", race="
+				+ race + "]";
 	}
 
 }

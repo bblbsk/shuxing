@@ -1,7 +1,11 @@
+#java发展史
+https://blog.csdn.net/djy1992/article/details/56666725
+
 #serializable:
 http://www.cnblogs.com/huhx/p/serializable.html
 http://www.cnblogs.com/huhx/p/sSerializableTheory.html
-
+https://www.jianshu.com/p/950ca56a28ee
+http://steven2011.iteye.com/blog/1299499
 
 #compare
 https://blog.csdn.net/a925907195/article/details/52434265
@@ -37,3 +41,24 @@ https://blog.csdn.net/fangxiaoji/article/details/78826165
 https://www.jianshu.com/p/8c24bef40e2f
 https://blog.csdn.net/qiuzhping/article/details/50328521
 https://blog.csdn.net/ft2028739/article/details/56068289
+
+xml诞生
+http://blog.sina.com.cn/s/blog_88f614cd0100x1t5.html
+xml
+https://blog.csdn.net/terryzero/article/details/4298878
+https://www.yiibai.com/java_xml/java_xml_parsers.html
+https://www.cnblogs.com/longqingyang/p/5577937.html
+https://www.cnblogs.com/chenbenbuyi/p/8283657.html
+#比较
+https://www.cnblogs.com/liango/p/7143848.html
+https://blog.csdn.net/jmppok/article/details/44409577
+https://github.com/eishay/jvm-serializers/wiki
+json与xml
+https://blog.csdn.net/qq_26641781/article/details/77877339
+https://www.cnblogs.com/alinaxia/p/6075647.html
+json序列化方式比较
+https://blog.csdn.net/accountwcx/article/details/50252657
+https://www.jianshu.com/p/cbc1aa0c7661
+https://blog.csdn.net/xiaoke815/article/details/52920405
+序列化与持久化
+https://blog.csdn.net/shixiaoguo90/article/details/22433245

@@ -11,7 +11,7 @@ import java.util.List;
  * @CreateTime：2018年7月8日上午11:02:05
  * @version v1.0
  */
-public class AnimalVo {//implements Serializable
+public class AnimalVo  {//implements Serializable
 	
 	private static final long serialVersionUID = 1L;
 	

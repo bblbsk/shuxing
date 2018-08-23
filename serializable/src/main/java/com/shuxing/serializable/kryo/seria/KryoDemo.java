@@ -1,4 +1,4 @@
-package com.shuxing.serializable.kryo;
+package com.shuxing.serializable.kryo.seria;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +19,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.shuxing.serializable.common.model.PerformanceModel;
 import com.shuxing.serializable.common.model.PerformanceNoSeriaModel;
+import com.shuxing.serializable.kryo.model.MachineDTO;
 
 public class KryoDemo {
 
@@ -51,6 +52,22 @@ public class KryoDemo {
 		System.out.println("------ method end -------------------");
 	}
 
+	@Test
+	public void testSerializable() throws FileNotFoundException {
+		// 序列化
+		Output output = new Output(new FileOutputStream(file));
+		kryo.writeObject(output, MachineDTO.getMachineDTO());
+		output.close();
+		
+		// 反序列化
+		Input input = new Input(new FileInputStream(file));
+		
+		MachineDTO machineDTO = kryo.readObject(input, MachineDTO.class);
+		System.out.println(input.limit());
+		input.close();
+		System.out.println(machineDTO);
+	}
+	
 	@Test
 	public void testSerializableList() throws FileNotFoundException{
 		// 序列化
