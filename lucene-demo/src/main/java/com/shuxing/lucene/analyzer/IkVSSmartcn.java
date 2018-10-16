@@ -6,7 +6,6 @@ import java.io.StringReader;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 import com.shuxing.lucene.ik.IKAnalyzer6x;
@@ -20,7 +19,7 @@ import com.shuxing.lucene.ik.IKAnalyzer6x;
  */
 public class IkVSSmartcn {
 
-	private static String str1 = "公路局正在治理解放大道路面积水问题。";
+	private static String str1 = "公路局正在治理解放大道路面积水问题。厉害了我的国。";
 	
 	private static String str2 = "IKAnalyzer 是一个开源的，基于 java 语言开发的轻量级的中文分词工具包。";
 	
