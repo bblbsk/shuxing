@@ -1,4 +1,4 @@
-package com.shuxing.lucene;
+package com.shuxing.lucene.staticRefer;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

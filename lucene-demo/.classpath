@@ -23,5 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="E:/6000.框架学习/6300.lucene/IKAnalyzer2012_u6/IKAnalyzer2012_u6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
