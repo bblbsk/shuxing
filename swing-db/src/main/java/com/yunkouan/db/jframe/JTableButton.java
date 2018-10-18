@@ -191,18 +191,15 @@ public class JTableButton extends AbstractCellEditor implements TableCellRendere
 		return obj == null ? Constant.INTEGER_DOUBLE : Double.valueOf(obj.toString()).intValue();
 	}
 	
-	@Override
 	public Object getCellEditorValue() {
 		return jButton;
 	}
 
-	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value,
 			boolean isSelected, int row, int column) {
 		return jButton;
 	}
 
-	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		return jButton;

@@ -16,8 +16,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Observer;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -477,7 +475,6 @@ public class DBJFrame extends JFrame {
 		JButton chooseExcel = new JButton("\u4E0A\u4F20\u4FEE\u6539\u540E\u6587\u4EF6\uFF1A");
 		chooseExcel.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		chooseExcel.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser jfc=new JFileChooser(excelFile.getText());  
 				jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );  
