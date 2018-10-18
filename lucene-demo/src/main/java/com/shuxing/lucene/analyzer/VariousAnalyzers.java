@@ -18,6 +18,8 @@ import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
+import com.shuxing.lucene.ik.IKAnalyzer6x;
+
 /**
  * @Description:多种分词器的比较
  * @Author：daojia
@@ -38,6 +40,7 @@ public class VariousAnalyzers {
 		analyzers.put("关键词分词", new KeywordAnalyzer());
 		analyzers.put("停用词分词", new StopAnalyzer());
 		analyzers.put("中文智能分词", new SmartChineseAnalyzer());
+		analyzers.put("IK分词", new IKAnalyzer6x(true));
 	}
 	
 	public static void main(String[] args) throws IOException {
