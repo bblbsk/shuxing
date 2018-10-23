@@ -3,19 +3,24 @@ package com.x.innerclass;
 
 /**
   * @ClassName: StaticInerClass
-  * @Description: ¾²Ì¬ÄÚ²¿Àà
+  * @Description: ï¿½ï¿½Ì¬ï¿½Ú²ï¿½ï¿½ï¿½
   * @author-csx
-  * @date 2017Äê11ÔÂ16ÈÕ ÏÂÎç1:16:44
+  * @date 2017ï¿½ï¿½11ï¿½ï¿½16ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½1:16:44
   *
   */
 public class StaticInerClass {
 
 	static class Child{
 		
+		public void print(){
+			System.out.println("inner");
+		}
 	}
 	
 	public static void main(String[] args) {
 		Child c0 = new Child();
 		StaticInerClass.Child c = new StaticInerClass.Child();
+		
+		c.print();
 	}
 }

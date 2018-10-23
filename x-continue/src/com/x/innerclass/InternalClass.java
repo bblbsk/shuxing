@@ -3,9 +3,9 @@ package com.x.innerclass;
 
 /**
   * @ClassName: InternalClass
-  * @Description: 成员内部类
+  * @Description: 锟斤拷员锟节诧拷锟斤拷
   * @author-csx
-  * @date 2017年11月16日 下午1:16:44
+  * @date 2017锟斤拷11锟斤拷16锟斤拷 锟斤拷锟斤拷1:16:44
   *
   */
 public class InternalClass {

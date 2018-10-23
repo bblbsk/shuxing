@@ -2,7 +2,7 @@ package com.shuxing.lucene.staticRefer;
 
 public class StaticTest {
 	
-	public static String print(StringFunc sf, String s) {
+	public String print(StringFunc sf, String s) {
 		return sf.func(s);
 	}
 
@@ -12,7 +12,9 @@ public class StaticTest {
 	}
 
 	public static void main(String[] args) {
-		print(StaticTest::printMessage, "123");
+		
+		new StaticTest().print(StaticTest::printMessage, "123");
+//		print(StaticTest::printMessage, "123");
 	}
 	
 
