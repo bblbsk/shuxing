@@ -49,6 +49,14 @@
 			<artifactId>lucene-highlighter</artifactId>
 			<version>6.0.0</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.apache.tika/tika-app -->
+		<dependency>
+		    <groupId>org.apache.tika</groupId>
+		    <artifactId>tika-app</artifactId>
+		    <version>1.19.1</version>
+		</dependency>
+
 
 		<!-- 官方测试例子 -->
 		<dependency>
