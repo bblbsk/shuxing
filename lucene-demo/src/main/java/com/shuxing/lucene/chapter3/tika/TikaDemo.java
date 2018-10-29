@@ -11,8 +11,6 @@ import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
-
-
 /**
  * @Description: Tika测试
  * @Author：daojia
@@ -25,7 +23,7 @@ public class TikaDemo {
 		
 		
 		// File
-		File file = new File("C:\\Users\\daojia\\Desktop\\aaa.pdf");
+		File file = new File("E:\\4000.项目信息\\4003.招聘系统（2018-09-17~2018-09-21）\\开放平台接口说明文档(v1.0.1)20180829.pdf");
 		FileInputStream fis = new FileInputStream(file);
 //		TikaInputStream inputStream = TikaInputStream.get(file.toURI());
 		
