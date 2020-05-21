@@ -3,22 +3,20 @@ package com.x.sorting;
 /**
  * Created by csx on 2018-04-12.
  *
- * ÅÅĞòËã·¨·ÖÀà 
- * ²åÈëÅÅĞò£ºÖ±½Ó²åÈëÅÅĞò£¬Ï£¶ûÅÅĞò 
- * ½»»»ÅÅĞò£ºÃ°ÅİÅÅĞò£¬¡¾¿ìËÙÅÅĞò¡¿ 
- * Ñ¡ÔñÅÅĞò£ºÖ±½ÓÑ¡ÔñÅÅĞò¡¢Ê÷ĞÎÑ¡ÔñÅÅĞò¡¢¶ÑÅÅĞòµÈ
+ * æ’åºç®—æ³•åˆ†ç±»
+ * æ’å…¥æ’åºï¼šç›´æ¥æ’å…¥æ’åºï¼Œå¸Œå°”æ’åº
+ * äº¤æ¢æ’åºï¼šå†’æ³¡æ’åºï¼Œã€å¿«é€Ÿæ’åºã€‘
+ * é€‰æ‹©æ’åºï¼šç›´æ¥é€‰æ‹©æ’åºã€æ ‘å½¢é€‰æ‹©æ’åºã€å †æ’åºç­‰
  */
 public class QuickSortDemo {
 
 	static int[] data = { 10, 8, 6, 4, 3, 5, 7, 1, 2, 0, 9 };
-	static int transCount = 0;
 
 	public static void main(String[] args) {
 		sort(0, data.length - 1);
 
 		for (int value : data) {
 			System.out.print(value + ", ");
-			System.out.print("´ÎÊı:" + transCount);
 		}
 	}
 
