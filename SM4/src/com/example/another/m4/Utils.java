@@ -20,7 +20,7 @@ public class Utils {
 		//313233342E3536200808080808080808
 		System.out.println(encode);
 		//gbk16转字符串
-		String decode = decode("31303439342E3537");
+		String decode = decode("313233342E3536200808080808080808");//313233342E3536
 		System.out.println(decode);
 	}
 

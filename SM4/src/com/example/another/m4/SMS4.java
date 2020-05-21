@@ -364,7 +364,7 @@ public class SMS4 {
     	byte[] encodeSMS4 = SMS4.encodeSMS4(in, key);
     	
     	String byteToString = Util.byteToHex(encodeSMS4);
-    	System.out.println("方法二，解密后，密文16进制内容：" + byteToString);
+    	System.out.println("方法二，加密后，密文16进制内容：" + byteToString);
     	return byteToString;
     	
     }
