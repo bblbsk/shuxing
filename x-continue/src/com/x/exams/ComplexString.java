@@ -25,7 +25,7 @@ public class ComplexString {
 
     public static void main(String[] args) {
 
-        System.out.println(new ComplexString().complexString("vadadc", "dddc"));
+        System.out.println(new ComplexString().complexString("adc", "dddc"));
     }
 
     private int complexString(String s1, String s2) {
@@ -39,8 +39,8 @@ public class ComplexString {
         stringsLengthDiff = s1Lenght - s2Lenght;
         // s2Lenght > s1Lenght
         if (stringsLengthDiff < 0) {
-            s2 = s2.substring(stringsLengthDiff);
-            moveCount += stringsLengthDiff;
+            s2 = s2.substring(Math.abs(stringsLengthDiff));
+            moveCount += Math.abs(stringsLengthDiff);
         } else if (stringsLengthDiff > 0) {
             // s1Lenght > s2Lenght
             s1 = s1.substring(stringsLengthDiff);
