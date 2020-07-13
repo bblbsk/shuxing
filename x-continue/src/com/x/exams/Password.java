@@ -97,6 +97,13 @@ public class Password {
         return "NO";
     }
 
+    /**
+    * @Description 操作字符串集合
+    * @Param [charMap, deleteChar, addContent]
+    * @Return java.util.Map<java.lang.Character,java.util.concurrent.atomic.AtomicInteger>
+    * @Author shuxing
+    * @Date 2020/7/13 14:17
+    **/
     private Map<Character, AtomicInteger> strToCharCountMap(Map<Character, AtomicInteger> charMap, Character deleteChar, String addContent) {
         // 移除的数据(当前情况下，移除的字符串已经被加到集合中，即被移除的字符串可定存在~)
         if (deleteChar != null) {
