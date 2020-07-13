@@ -1,4 +1,4 @@
-package com.x.exams.dedup;
+package com.x.exams;
 
 import com.google.common.collect.Sets;
 

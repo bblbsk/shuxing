@@ -1,4 +1,4 @@
-package com.x.exams.disapeared;
+package com.x.exams;
 
 import java.util.Stack;
 

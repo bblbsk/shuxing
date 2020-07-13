@@ -1,4 +1,4 @@
-package com.x.exams.findingNumber;
+package com.x.exams;
 
 import com.google.common.collect.Sets;
 
