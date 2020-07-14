@@ -1,7 +1,5 @@
 package com.x.exams;
 
-import java.util.Arrays;
-
 /**
 * @Description
  *  Tom和Jerry都很喜欢吃奶酪，现在有n块奶酪散落在坐标轴上(1<=n<=100000)，
