@@ -21,11 +21,11 @@ package com.x.exams;
 **/
 public class Cheese {
 
-    static int[] sortData = new int[]{7000, 6000, 60000, 80000, 99999};
+    static int[] sortData = new int[]{2,3,50000,99997,99998,99999};
 
     public static void main(String[] args) {
 
-        System.out.println(new Cheese().solution(6, sortData));
+//        System.out.println(new Cheese().solution(6, sortData));
 
 //        new Cheese().sort(0, sortData.length - 1);
 //        System.out.println(Arrays.toString(sortData));
@@ -42,21 +42,25 @@ public class Cheese {
     **/
     private int solution(int n, int[] nums) {
         // 最小值
-        Integer minimum = null;
+        int minimum = 0;
+        // 单个元素判断起点和终点较近的值
+        int coordinateMinimum;
+        // 距离起点的距离
+        int distanceBegin;
         // 距离终点的距离
-        int distanceEnd = 0;
+        int distanceEnd;
         for (int num : nums) {
+            distanceBegin = num - 1;
             distanceEnd = 100000 - num;
-            int coordinateMinimum = 0;
             // 距离起点的距离 < 距离终点的距离，取坐标值
-            if (num <= distanceEnd) {
-                coordinateMinimum = num;
+            if (distanceBegin <= distanceEnd) {
+                coordinateMinimum = distanceBegin;
             } else {
                 // 否则取
                 coordinateMinimum = distanceEnd;
             }
             // 坐标之间取较大的那个
-            if (minimum == null || minimum < coordinateMinimum) {
+            if (minimum < coordinateMinimum) {
                 minimum = coordinateMinimum;
             }
         }
@@ -72,7 +76,7 @@ public class Cheese {
     **/
     private int solution1(int n, int[] nums) {
         // 数组个数
-        int numLength = nums.length;
+        int numLength = n;
         // 排序
         sortData = nums;
         sort(0, numLength - 1);
@@ -80,8 +84,8 @@ public class Cheese {
         if (nums.length % 2 == 1) {
             int mid = sortData[numLength / 2];
             int distanceEnd = 100000 - mid;
-            if (mid < distanceEnd) {
-                return mid;
+            if (mid - 1 < distanceEnd) {
+                return mid - 1;
             } else {
                 return distanceEnd;
             }
@@ -96,37 +100,37 @@ public class Cheese {
         } else {
             correctNum = sortData[midRight];
         }
-        if (correctNum < 100000 - correctNum) {
-            return correctNum;
+        if (correctNum - 1< 100000 - correctNum) {
+            return correctNum - 1;
         }
         return 100000 - correctNum;
     }
 
-    private void sort(int left, int right) {
-        int i, j, temp;
-        i = left;
-        j = right;
-        if (left > right) {
-            return;
-        }
-        temp = sortData[i];
-        while (i != j) {
-            while (sortData[j] <= temp && j > i) {
-                j--;
+        private void sort(int left, int right) {
+            int i, j, temp;
+            i = left;
+            j = right;
+            if (left > right) {
+                return;
             }
-            while (sortData[i] >= temp && j > i) {
-                i++;
+            temp = sortData[i];
+            while (i != j) {
+                while (sortData[j] <= temp && j > i) {
+                    j--;
+                }
+                while (sortData[i] >= temp && j > i) {
+                    i++;
+                }
+                if(i < j){
+                    int t = sortData[i];
+                    sortData[i] = sortData[j];
+                    sortData[j] = t;
+                }
             }
-            if(i < j){
-                int t = sortData[i];
-                sortData[i] = sortData[j];
-                sortData[j] = t;
-            }
-        }
-        sortData[left] = sortData[i];
-        sortData[i] = temp;
+            sortData[left] = sortData[i];
+            sortData[i] = temp;
 
-        sort(0, i - 1);
-        sort(i + 1, right);
-    }
+            sort(0, i - 1);
+            sort(i + 1, right);
+        }
 }
