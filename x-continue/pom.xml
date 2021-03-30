@@ -4,7 +4,7 @@
   <artifactId>continue</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>x-continue</name>
-  
+
   <dependencies>
   	<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 	<dependency>
@@ -19,22 +19,28 @@
 	    <artifactId>commons-io</artifactId>
 	    <version>2.4</version>
 	</dependency>
-	
+
 	<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 	<dependency>
 	    <groupId>org.slf4j</groupId>
 	    <artifactId>slf4j-api</artifactId>
 	    <version>1.7.25</version>
 	</dependency>
-	
+
 	<dependency>
 		<groupId>org.apache.commons</groupId>
 		<artifactId>commons-collections4</artifactId>
 		<version>4.1</version>
 	</dependency>
-  
+
+      <dependency>
+          <groupId>gui.ava</groupId>
+          <artifactId>html2image</artifactId>
+          <version>2.0.1</version>
+      </dependency>
+
   </dependencies>
-  
+
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -45,7 +51,7 @@
         </excludes>
       </resource>
     </resources>
-    
+
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
