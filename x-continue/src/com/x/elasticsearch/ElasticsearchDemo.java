@@ -10,6 +10,8 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -41,10 +43,11 @@ public class ElasticsearchDemo {
         );
 
 //        createIndex();
-        reindex();
-
+//        reindex();
+//        get();
 
 //        insert();
+        update();
 //        getDocument();
 //        termQuery();
 //        matchQuery();
@@ -100,6 +103,12 @@ public class ElasticsearchDemo {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest("staff");
         createIndexRequest.mapping(contentBuilder);
         CreateIndexResponse createIndexResponse = highLevelClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
+    }
+
+    private static void get() throws IOException {
+        GetRequest getRequest = new GetRequest("shuxing1", "3");
+        GetResponse documentFields = highLevelClient.get(getRequest, RequestOptions.DEFAULT);
+        System.out.println("JSON.toJSONString(documentFields) = " + JSON.toJSONString(documentFields));
     }
 
     private static void ids() throws IOException {
@@ -162,6 +171,15 @@ public class ElasticsearchDemo {
         indexRequest.source(JSON.toJSONString(obj), XContentType.JSON);
         IndexResponse indexResponse = highLevelClient.index(indexRequest, RequestOptions.DEFAULT);
         System.out.println("indexResponse = " + indexResponse);
+    }
+
+    private static void update() throws IOException {
+        Map<String, Object> obj = Maps.newHashMap();
+        obj.put("name", "shuxing11");
+        UpdateRequest updateRequest = new UpdateRequest("shuxing", "3");
+        updateRequest.doc(JSON.toJSONString(obj), XContentType.JSON);
+        UpdateResponse updateResponse = highLevelClient.update(updateRequest, RequestOptions.DEFAULT);
+        System.out.println("JSON.toJSONString(updateRequest) = " + JSON.toJSONString(updateRequest));
     }
 
     // 获取文档
