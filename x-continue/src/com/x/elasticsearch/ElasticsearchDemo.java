@@ -21,6 +21,8 @@ import org.elasticsearch.common.xcontent.json.JsonXContent;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.ReindexRequest;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
@@ -38,7 +40,9 @@ public class ElasticsearchDemo {
                 )
         );
 
-        createIndex();
+//        createIndex();
+        reindex();
+
 
 //        insert();
 //        getDocument();
@@ -49,6 +53,15 @@ public class ElasticsearchDemo {
 //        ids();
 
         highLevelClient.close();
+    }
+
+    private static void reindex() throws IOException {
+        ReindexRequest reindexRequest = new ReindexRequest();
+        reindexRequest.setSourceIndices("shuxing1");
+        reindexRequest.setDestIndex("shuxing2");
+        BulkByScrollResponse response = highLevelClient.reindex(reindexRequest, RequestOptions.DEFAULT);
+        System.out.println("response.getStatus() = " + response.getStatus());
+        System.out.println("response.getTotal() = " + response.getTotal());
     }
 
     private static void createIndex() throws IOException {
