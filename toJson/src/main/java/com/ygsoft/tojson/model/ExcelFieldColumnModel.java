@@ -1,7 +1,6 @@
-package com.ygsoft.tojson.generator.model;
+package com.ygsoft.tojson.model;
 
 import lombok.Data;
-import org.apache.poi.ss.usermodel.CellType;
 
 /**
 * 列
@@ -16,7 +15,7 @@ public class ExcelFieldColumnModel {
     /**
      * 参数类型 0:入参，1：出参
      */
-    private int paramType;
+    private String paramType;
 
     /**
      * 字段描述
@@ -31,7 +30,7 @@ public class ExcelFieldColumnModel {
     /**
      * 数据类型
      */
-    private CellType cellType;
+    private String cellType;
 
     /**
      * 是否必填 0:非必填， 1：必填

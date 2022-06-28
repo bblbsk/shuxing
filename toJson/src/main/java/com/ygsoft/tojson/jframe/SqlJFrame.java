@@ -1,6 +1,6 @@
 package com.ygsoft.tojson.jframe;
 
-import com.ygsoft.tojson.generator.SqlGenerator;
+import com.ygsoft.tojson.util.SqlGenerator;
 import com.ygsoft.tojson.jframe.adapter.JFrameWindowAdapter;
 import com.ygsoft.tojson.util.Constant;
 import com.ygsoft.tojson.util.Constant.SQLTableInfo;

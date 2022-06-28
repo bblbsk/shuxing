@@ -1,4 +1,4 @@
-package com.ygsoft.tojson.interfaces;
+package com.ygsoft.tojson.annotation;
 
 
 

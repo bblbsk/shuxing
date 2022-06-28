@@ -1,4 +1,4 @@
-package com.ygsoft.tojson.generator.enums;
+package com.ygsoft.tojson.enums;
 
 /**
 * 参数类型

@@ -1,4 +1,6 @@
-package com.ygsoft.tojson.generator.enums;
+package com.ygsoft.tojson.enums;
+
+import lombok.Data;
 
 /**
 * 是否必填
@@ -18,5 +20,13 @@ public enum RequiredType {
     RequiredType(Integer type, String desc) {
         this.type = type;
         this.desc = desc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public Integer getType() {
+        return type;
     }
 }

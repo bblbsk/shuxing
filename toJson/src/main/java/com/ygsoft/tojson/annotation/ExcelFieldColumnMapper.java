@@ -1,4 +1,4 @@
-package com.ygsoft.tojson.generator.annotation;
+package com.ygsoft.tojson.annotation;
 
 import org.apache.poi.ss.usermodel.CellType;
 

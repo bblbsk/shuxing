@@ -1,5 +1,8 @@
-package com.ygsoft.tojson.generator.enums;
+package com.ygsoft.tojson.enums;
 
+import com.ygsoft.tojson.converter.ColumnValueConverter;
+import com.ygsoft.tojson.converter.impl.CellTypeConverter;
+import com.ygsoft.tojson.converter.impl.RequiredTypeConverter;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -15,14 +18,13 @@ import java.util.Map;
 @Getter
 public enum ExcelFieldColumnEnum {
 
-    DATA_NAME(0, "参数类型", "paramType"),
-    DATA_CATEGORY(1, "中文名称", "cnName"),
-    DATA_LEVEL(2, "英文名称", "enName"),
-    DATA_COUNT(3, "数据类型", "cellType"),
-    EXIT_TYPE(4, "是否必填", "requiredType"),
-    EXIT_TIME( 5, "出境时间", "exit_time"),
-    CROSS_SUBJECT_FLOW_TYPE(6, "默认值", "defaultValue"),
-    TRANSFER_TIME(7, "参数说明", "desc");
+    PARAM_TYPE(0, "参数类型", "paramType", null),
+    CN_NAME(1, "中文名称", "cnName", null),
+    EN_NAME(2, "英文名称", "enName", null),
+    CELL_TYPE(3, "数据类型", "cellType", new CellTypeConverter()),
+    REQUIRED_TYPE(4, "是否必填", "requiredType", new RequiredTypeConverter()),
+    DEFAULT_VALUE(5, "默认值", "defaultValue", null),
+    DESC(6, "参数说明", "desc", null);
 
     private static Map<String, String> COLUMN_MAP = new HashMap<>(16);
 
@@ -41,10 +43,16 @@ public enum ExcelFieldColumnEnum {
      */
     private String fieldName;
 
-    ExcelFieldColumnEnum(int columnIndex, String name, String fieldName) {
+    /**
+     * 转换器
+     */
+    private ColumnValueConverter converter;
+
+    ExcelFieldColumnEnum(int columnIndex, String name, String fieldName, ColumnValueConverter converter) {
         this.columnIndex = columnIndex;
         this.name = name;
         this.fieldName = fieldName;
+        this.converter = converter;
     }
 
     /**

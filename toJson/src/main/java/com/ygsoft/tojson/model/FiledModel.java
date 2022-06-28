@@ -1,6 +1,6 @@
 package com.ygsoft.tojson.model;
 
-import com.ygsoft.tojson.interfaces.FiledDefineInterface;
+import com.ygsoft.tojson.annotation.FiledDefineInterface;
 import org.apache.poi.ss.usermodel.Row;
 
 @FiledDefineInterface(
