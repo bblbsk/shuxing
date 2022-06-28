@@ -1,7 +1,10 @@
 package com.ygsoft.tojson.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.ygsoft.tojson.enums.ExcelFieldColumnEnum;
+import com.ygsoft.tojson.enums.ParamType;
 import com.ygsoft.tojson.model.ExcelFieldColumnModel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -12,7 +15,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
 * 读取Excel
@@ -61,6 +67,63 @@ public class ExcelReader {
         }
 
         System.out.println("modelList = " + JSON.toJSONString(modelList, true));
+        // 属性类型映射
+        Map<String, String> fieldTypeMap = modelList.stream()
+                .filter(model -> "java.lang.Object".equals(model.getCellType()))
+                .collect(Collectors.toMap(ExcelFieldColumnModel::getEnName, ExcelFieldColumnModel::getCellType));
+        // 缓存为json对象
+        JSONObject jsonObject = new JSONObject(true);
+        for (ExcelFieldColumnModel model : modelList) {
+            String paramType = model.getParamType();
+            String innerObjectKey = null;
+            if (!ParamType.IN.getDesc().equals(paramType)) {
+                // 层级对象key
+                innerObjectKey = paramType.substring(ParamType.IN.getDesc().length());
+                String fieldType = fieldTypeMap.get(innerObjectKey);
+                if ("java.util.List".equals(fieldType)) {
+                    putValue(jsonObject.getJSONArray(innerObjectKey).getJSONObject(0), model);
+                    continue;
+                }
+                putValue(jsonObject.getJSONObject(innerObjectKey), model);
+                continue;
+            }
+            putValue(jsonObject, model);
+        }
+
+        System.out.println("jsonObject = " + JSON.toJSONString(jsonObject, true));
     }
+
+    /**
+    * 维护数据
+    * @param jsonObject
+    * @return void
+    * @author caishixian
+    * @date 2022/6/28 23:22
+    */
+    private static void putValue(JSONObject jsonObject, ExcelFieldColumnModel model) {
+        if (jsonObject == null) {
+            return;
+        }
+
+        switch (model.getCellType()) {
+            case "java.lang.String":
+                jsonObject.put(model.getEnName(), StringUtils.EMPTY);
+                return;
+            case "java.lang.Integer":
+                jsonObject.put(model.getEnName(), 0);
+                return;
+            case "java.lang.Long":
+                jsonObject.put(model.getEnName(), 0L);
+                return;
+            case "java.lang.Object":
+                jsonObject.put(model.getEnName(), new JSONObject(true));
+                return;
+            case "java.util.List":
+                jsonObject.put(model.getEnName(), new JSONArray().add(new JSONObject(true)));
+                return;
+        }
+        jsonObject.put(model.getEnName(), StringUtils.EMPTY);
+    }
+
 
 }

@@ -1,5 +1,7 @@
 package com.ygsoft.tojson.enums;
 
+import lombok.Data;
+
 /**
 * 参数类型
 * @className ParamType.java
@@ -9,8 +11,8 @@ package com.ygsoft.tojson.enums;
 */
 public enum ParamType {
 
-    IN(0, "入参"),
-    OUT(1, "出参");
+    IN(0, "输入参数"),
+    OUT(1, "输出参数");
 
     private Integer type;
     private String desc;
@@ -18,5 +20,13 @@ public enum ParamType {
     ParamType(Integer type, String desc) {
         this.type = type;
         this.desc = desc;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public String getDesc() {
+        return desc;
     }
 }
