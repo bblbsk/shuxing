@@ -1,12 +1,9 @@
 package com.ygsoft.tojson.jframe;
 
-import com.ygsoft.tojson.util.SqlGenerator;
+import com.ygsoft.tojson.util.*;
 import com.ygsoft.tojson.jframe.adapter.JFrameWindowAdapter;
-import com.ygsoft.tojson.util.Constant;
 import com.ygsoft.tojson.util.Constant.SQLTableInfo;
-import com.ygsoft.tojson.util.FileWriterUtils;
-import com.ygsoft.tojson.util.FiledEnum;
-import com.ygsoft.tojson.util.XLSReader;
+import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -46,8 +43,10 @@ public class SqlJFrame extends JFrame {
 	private JPanel settingPanel;
 	//生成Sql数据JPanel
 	private JPanel genaratorPanel ;
-	//模板导入数据 JPanel
-	private JPanel templatePanel ;
+	//mysql导入数据 JPanel
+	private JPanel mysqlTemplatePanel;
+	//接口转JSON JPanel
+	private JPanel jsonTemplatePanel;
 
 	private JTextField datePicker;
 
@@ -68,7 +67,7 @@ public class SqlJFrame extends JFrame {
 	public SqlJFrame() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setTitle("数据库生成工具V0.1");
+		setTitle("开发工具V0.1");
 		setBounds(200, 20, 986, 700);
 
 		//创建窗口关闭监听
@@ -78,7 +77,6 @@ public class SqlJFrame extends JFrame {
 		/**
 		 * JTabbedPane Tab容器
 		 */
-
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -91,16 +89,133 @@ public class SqlJFrame extends JFrame {
 		contentPane.add(tabbedPane);
 
 		/**
+		 *json转换Panel
+		 */
+		jsonTemplatePanel = new JPanel();
+		jsonTemplatePanel.setLayout(null);
+		tabbedPane.addTab("⟦一⟧接口文档解析", null, jsonTemplatePanel, null);
+
+		// 入参出参选择
+		final JComboBox<String> paramType = new JComboBox<String>();
+		paramType.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		paramType.setBounds(342, 222, 227, 37);
+		jsonTemplatePanel.add(paramType);
+
+		JButton uploadInterfaceExcel = new JButton("解析接口");
+		uploadInterfaceExcel.setFont(new Font("微软雅黑", Font.PLAIN, 14));
+		uploadInterfaceExcel.setBounds(472, 141, 144, 37);
+		uploadInterfaceExcel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser jfc=new JFileChooser(desktop);
+				jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
+				jfc.showDialog(new JLabel(), "选择");
+				File file=jfc.getSelectedFile();
+				try {
+					if (!file.getName().endsWith(Constant.EXCEL_FILE_SUFFIX)) {
+						JOptionPane.showMessageDialog(null, "请选择Excel文件!");
+						return;
+					}
+					paramType.addItem("输入参数");
+					paramType.addItem("输出参数");
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		jsonTemplatePanel.add(uploadInterfaceExcel);
+
+		JButton getInterfaceTemplate = new JButton("下载模板");
+		getInterfaceTemplate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					//获取文件导出路径，默认为桌面
+					JFileChooser chooser_desti = new JFileChooser(desktop);
+					chooser_desti.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					chooser_desti.setDialogTitle("选择文件导出路径");
+					int ret = chooser_desti.showOpenDialog(null);
+					//选择路径
+					if(ret == JFileChooser.APPROVE_OPTION){
+						File desFile = chooser_desti.getSelectedFile().getAbsoluteFile();
+						// 获取jar包中excel文件
+						InputStream is = SqlJFrame.class.getClassLoader().getResourceAsStream(Constant.INTERFACE_EXCEL_FILE_NAME);
+						// 写到临时文件
+						File srcFile = FileWriterUtils.writeToFile(is);
+						// 复制临时文件到导出文件
+						FileUtils.copyFileToDirectory(srcFile, desFile, true);
+					}else if(ret == JFileChooser.CANCEL_OPTION){
+						return;
+					}
+				} catch (Exception e1) {
+					log.info("复制文件失败:" + e1.getMessage());
+				}
+			}
+		});
+		getInterfaceTemplate.setFont(new Font("微软雅黑", Font.PLAIN, 14));
+		getInterfaceTemplate.setBounds(118, 141, 144, 37);
+		jsonTemplatePanel.add(getInterfaceTemplate);
+
+		JLabel lblNewLabel_6 = new JLabel("说明：获取Excel模板，对模板进行修改后，上传模板，进行接口json转换");
+		lblNewLabel_6.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		lblNewLabel_6.setForeground(Color.RED);
+		lblNewLabel_6.setBounds(118, 78, 498, 24);
+		jsonTemplatePanel.add(lblNewLabel_6);
+
+		JLabel lblNewLabel_5 = new JLabel("选择解析入参或出参信息：");
+		lblNewLabel_5.setFont(new Font("微软雅黑", Font.PLAIN, 14));
+		lblNewLabel_5.setBounds(118, 222, 169, 37);
+		jsonTemplatePanel.add(lblNewLabel_5);
+
+		JButton jsonButton = new JButton("解析参数");
+		jsonButton.addActionListener(new ActionListener() {
+			@SneakyThrows
+			public void actionPerformed(ActionEvent e) {
+				String paramTypeValue = paramType.getSelectedItem().toString();
+				System.out.println("paramTypeValue = " + paramTypeValue);
+				// 展示数据
+				Object[] message = new Object[2];
+				message[0] = new JLabel("语句预览");
+
+				JTextArea cb = new JTextArea();
+				// 生成json
+				cb.setText(ExcelReader.readInterfaceJsonParam(new File("C:\\Users\\admin\\Desktop\\template.xlsx")));
+				message[1] = cb;
+
+				// Options
+				String[] options = {"关闭"};
+				int result = JOptionPane.showOptionDialog(SqlJFrame.this,
+						message, // the dialog message array
+						"脚本展示", // the title of the dialog window
+						JOptionPane.DEFAULT_OPTION, // option type
+						JOptionPane.INFORMATION_MESSAGE, // message type
+						null, // optional icon, use null to use the default icon
+						options, // options string array, will be made into
+						// buttons
+						options[0] // option that should be made into a default
+						// button
+				);
+				switch (result) {
+					case 0:
+						//TODO if need todo
+						break;
+				}
+			}
+		});
+		jsonButton.setFont(new Font("微软雅黑", Font.PLAIN, 14));
+		jsonButton.setBounds(240, 327, 137, 55);
+		jsonTemplatePanel.add(jsonButton);
+
+		/**
 		 *加载模板
 		 */
-		templatePanel = new JPanel();
-		templatePanel.setLayout(null);
-		tabbedPane.addTab("加载模板", null, templatePanel, null);
+		mysqlTemplatePanel = new JPanel();
+		mysqlTemplatePanel.setLayout(null);
+		tabbedPane.addTab("⟦二⟧mysql模板", null, mysqlTemplatePanel, null);
 
 		final JComboBox<String> excelList = new JComboBox<String>();
-		excelList.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		paramType.setFont(new Font("微软雅黑", Font.PLAIN, 12));
 		excelList.setBounds(342, 222, 227, 37);
-		templatePanel.add(excelList);
+		mysqlTemplatePanel.add(excelList);
 
 		JButton chooseExcel = new JButton("上传模板");
 		chooseExcel.setFont(new Font("微软雅黑", Font.PLAIN, 14));
@@ -131,7 +246,7 @@ public class SqlJFrame extends JFrame {
 				}
 			}
 		});
-		templatePanel.add(chooseExcel);
+		mysqlTemplatePanel.add(chooseExcel);
 
 		JButton showTemplate = new JButton("数据修改");
 		showTemplate.setFont(new Font("微软雅黑", Font.PLAIN, 14));
@@ -175,10 +290,10 @@ public class SqlJFrame extends JFrame {
 				isNull.setCellEditor(new DefaultCellEditor(new JComboBox<String>(SQLTableInfo.ISNOT_COMBOBOXDATA)));
 
 				//切换panel
-				tabbedPane.setSelectedIndex(1);
+				tabbedPane.setSelectedIndex(2);
 			}
 		});
-		templatePanel.add(showTemplate);
+		mysqlTemplatePanel.add(showTemplate);
 
 		JButton getTemplate = new JButton("下载模板");
 		getTemplate.addActionListener(new ActionListener() {
@@ -208,18 +323,18 @@ public class SqlJFrame extends JFrame {
 		});
 		getTemplate.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		getTemplate.setBounds(118, 141, 144, 37);
-		templatePanel.add(getTemplate);
+		mysqlTemplatePanel.add(getTemplate);
 
 		JLabel lblNewLabel_2 = new JLabel("说明：获取Excel模板，对模板进行修改后，上传模板，进行sql转换");
 		lblNewLabel_2.setFont(new Font("微软雅黑", Font.PLAIN, 12));
 		lblNewLabel_2.setForeground(Color.RED);
 		lblNewLabel_2.setBounds(118, 78, 498, 24);
-		templatePanel.add(lblNewLabel_2);
+		mysqlTemplatePanel.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Excel文件中可生成标签：");
 		lblNewLabel_3.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		lblNewLabel_3.setBounds(118, 222, 169, 37);
-		templatePanel.add(lblNewLabel_3);
+		mysqlTemplatePanel.add(lblNewLabel_3);
 
 		JButton button = new JButton("直接生成");
 		button.addActionListener(new ActionListener() {
@@ -263,17 +378,16 @@ public class SqlJFrame extends JFrame {
 		});
 		button.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		button.setBounds(240, 327, 137, 55);
-		templatePanel.add(button);
+		mysqlTemplatePanel.add(button);
 
 
-		//TODO
 		/**
 		 * sql生成模板
 		 */
 		genaratorPanel = new JPanel();
 		genaratorPanel.setBackground(Color.WHITE);
 		genaratorPanel.setLayout(null);
-		tabbedPane.addTab("生成语句", null, genaratorPanel, null);
+		tabbedPane.addTab("⟦三⟧生成语句", null, genaratorPanel, null);
 
 		//初始显示数据
 		Object[][] data = new Object[0][SQLTableInfo.TABLE_COLUMN_NAMES.length];;
@@ -477,7 +591,7 @@ public class SqlJFrame extends JFrame {
 		 * 配置pannel
 		 */
 		settingPanel = new JPanel();
-		tabbedPane.addTab("语句配置", null, settingPanel, null);
+		tabbedPane.addTab("⟦四⟧语句配置", null, settingPanel, null);
 		settingPanel.setLayout(null);
 
 		JComboBox<String> dbConnect_db_type = new JComboBox<String>();

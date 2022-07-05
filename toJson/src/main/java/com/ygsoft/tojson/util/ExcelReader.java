@@ -7,12 +7,14 @@ import com.ygsoft.tojson.enums.ExcelFieldColumnEnum;
 import com.ygsoft.tojson.enums.ParamType;
 import com.ygsoft.tojson.model.ExcelFieldColumnModel;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -30,8 +32,13 @@ import java.util.stream.Collectors;
 public class ExcelReader {
 
     public static void main(String[] args) throws Exception {
-        // 加载模板
         File file = new File("C:\\Users\\admin\\Desktop\\template.xlsx");
+        String interfaceJsonParam = readInterfaceJsonParam(file);
+        System.out.println("interfaceJsonParam = " + interfaceJsonParam);
+    }
+
+    public static String readInterfaceJsonParam(File file) throws Exception {
+        // 加载模板
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(file);
         XSSFSheet inputSheet = xssfWorkbook.getSheetAt(0);
         int lastRowNum = inputSheet.getLastRowNum();
@@ -90,7 +97,7 @@ public class ExcelReader {
             putValue(jsonObject, model);
         }
 
-        System.out.println("jsonObject = " + JSON.toJSONString(jsonObject, true));
+        return JSON.toJSONString(jsonObject, true);
     }
 
     /**

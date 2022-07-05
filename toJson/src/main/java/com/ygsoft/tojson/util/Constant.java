@@ -82,14 +82,16 @@ public class Constant {
 	/**
 	 * 模板名称
 	 */
-	public static final String EXCEL_FILE_NAME = "sql.xls";
+	public static final String EXCEL_FILE_NAME = "sql.xlsx";
 	/**
 	 * excel文件拓展名
 	 */
-	public static final String EXCEL_FILE_SUFFIX = ".xls";
-	
-	
-	
+	public static final String EXCEL_FILE_SUFFIX = ".xlsx";
+	/**
+	 * 接口模板名称
+	 */
+	public static final String INTERFACE_EXCEL_FILE_NAME = "template.xlsx";
+
 	/**
 	 * edi_header表项目信息
 	 */
