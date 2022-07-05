@@ -23,9 +23,9 @@ public class FileWriterUtils {
 	  * @return File    返回类型
 	  * @throws
 	  */
-	public static File writeToFile(InputStream is){
+	public static File writeToFile(InputStream is, String desFileName){
 		File root = new File("");
-		String srcFilePath = root.getAbsolutePath() + File.separator + Constant.EXCEL_FILE_NAME;
+		String srcFilePath = root.getAbsolutePath() + File.separator + desFileName;
 		//创建文件
 		File srcFile = new File(srcFilePath);
 		FileOutputStream os;

@@ -1,7 +1,7 @@
 package com.ygsoft.tojson.jframe;
 
-import com.ygsoft.tojson.util.*;
 import com.ygsoft.tojson.jframe.adapter.JFrameWindowAdapter;
+import com.ygsoft.tojson.util.*;
 import com.ygsoft.tojson.util.Constant.SQLTableInfo;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
@@ -24,8 +24,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 
@@ -59,6 +60,8 @@ public class SqlJFrame extends JFrame {
 	private DefaultTableModel tableModel;
 	// 需要隐藏的行
 	private int[] selectedRows;
+	// 接口文档
+	private File interfaceFile;
 
 
 	/**
@@ -110,9 +113,9 @@ public class SqlJFrame extends JFrame {
 				JFileChooser jfc=new JFileChooser(desktop);
 				jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
 				jfc.showDialog(new JLabel(), "选择");
-				File file=jfc.getSelectedFile();
+				interfaceFile = jfc.getSelectedFile();
 				try {
-					if (!file.getName().endsWith(Constant.EXCEL_FILE_SUFFIX)) {
+					if (!interfaceFile.getName().endsWith(Constant.EXCEL_FILE_SUFFIX)) {
 						JOptionPane.showMessageDialog(null, "请选择Excel文件!");
 						return;
 					}
@@ -140,7 +143,7 @@ public class SqlJFrame extends JFrame {
 						// 获取jar包中excel文件
 						InputStream is = SqlJFrame.class.getClassLoader().getResourceAsStream(Constant.INTERFACE_EXCEL_FILE_NAME);
 						// 写到临时文件
-						File srcFile = FileWriterUtils.writeToFile(is);
+						File srcFile = FileWriterUtils.writeToFile(is, Constant.INTERFACE_EXCEL_FILE_NAME);
 						// 复制临时文件到导出文件
 						FileUtils.copyFileToDirectory(srcFile, desFile, true);
 					}else if(ret == JFileChooser.CANCEL_OPTION){
@@ -174,18 +177,18 @@ public class SqlJFrame extends JFrame {
 				System.out.println("paramTypeValue = " + paramTypeValue);
 				// 展示数据
 				Object[] message = new Object[2];
-				message[0] = new JLabel("语句预览");
+				message[0] = new JLabel("JSON预览");
 
 				JTextArea cb = new JTextArea();
 				// 生成json
-				cb.setText(ExcelReader.readInterfaceJsonParam(new File("C:\\Users\\admin\\Desktop\\template.xlsx")));
+				cb.setText(ExcelReader.readInterfaceJsonParam(interfaceFile));
 				message[1] = cb;
 
 				// Options
 				String[] options = {"关闭"};
 				int result = JOptionPane.showOptionDialog(SqlJFrame.this,
 						message, // the dialog message array
-						"脚本展示", // the title of the dialog window
+						"解析参数", // the title of the dialog window
 						JOptionPane.DEFAULT_OPTION, // option type
 						JOptionPane.INFORMATION_MESSAGE, // message type
 						null, // optional icon, use null to use the default icon
@@ -310,7 +313,7 @@ public class SqlJFrame extends JFrame {
 						// 获取jar包中excel文件
 						InputStream is = SqlJFrame.class.getClassLoader().getResourceAsStream(Constant.EXCEL_FILE_NAME);
 						// 写到临时文件
-						File srcFile = FileWriterUtils.writeToFile(is);
+						File srcFile = FileWriterUtils.writeToFile(is, Constant.EXCEL_FILE_NAME);
 						// 复制临时文件到导出文件
 						FileUtils.copyFileToDirectory(srcFile, desFile, true);
 					}else if(ret == JFileChooser.CANCEL_OPTION){
