@@ -175,6 +175,10 @@ public class SqlJFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String paramTypeValue = paramType.getSelectedItem().toString();
 				System.out.println("paramTypeValue = " + paramTypeValue);
+				if (!paramTypeValue.equals("输入参数")) {
+					JOptionPane.showMessageDialog(null, "目前仅支持解析入参!");
+					return;
+				}
 				// 展示数据
 				Object[] message = new Object[2];
 				message[0] = new JLabel("JSON预览");
