@@ -8,7 +8,7 @@ public class Constant {
 	/**
 	 * @Title: Constant.java
 	 * @Description:组织Sql所需的常量
-	 * @Author：daojia
+	 * @Author：shuxing
 	 * @CreateTime：2018年6月7日下午7:37:27
 	 * @version v1.0
 	 */
@@ -43,7 +43,7 @@ public class Constant {
 	/**
 	 * @Title: FiledOrderConstant.java
 	 * @Description:字段拼接顺序，此类不能修改
-	 * @Author：daojia
+	 * @Author：shuxing
 	 * @CreateTime：2018年6月7日下午8:03:16
 	 * @version v1.0
 	 */
@@ -66,7 +66,7 @@ public class Constant {
 	/**
 	 * @Title: Constant.java
 	 * @Description:字段属性位置
-	 * @Author：daojia
+	 * @Author：shuxing
 	 * @CreateTime：2018年6月7日下午7:06:08
 	 * @version v1.0
 	 */

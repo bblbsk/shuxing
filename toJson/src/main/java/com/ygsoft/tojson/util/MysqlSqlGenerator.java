@@ -24,15 +24,15 @@ import com.ygsoft.tojson.util.XLSReader;
 /**
  * @Title: SqlGenerator.java
  * @Description:语句生成器
- * @Author：daojia
+ * @Author：shuxing
  * @CreateTime：2018年6月10日上午10:34:34
  * @version v1.0
  */
-public class SqlGenerator {
+public class MysqlSqlGenerator {
 
 	public static void main(String[] args) throws IOException {
 
-		Workbook wb = new HSSFWorkbook(new FileInputStream(new File("C:\\Users\\daojia\\Desktop\\数据库设计.xls")));  
+		Workbook wb = new HSSFWorkbook(new FileInputStream(new File("C:\\Users\\shuxing\\Desktop\\数据库设计.xls")));  
 		
 		Sheet sheetAt = wb.getSheetAt(0);
 		
@@ -53,7 +53,7 @@ public class SqlGenerator {
 	 * @Description:通过Excel文件，生成指定的sheetIndex表 
 	 * @Method: generatorByIndex
 	 * @ReturnType String
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月9日下午9:49:55
 	 * @throws
 	 */
@@ -75,7 +75,7 @@ public class SqlGenerator {
 	 * @Description:通过JTable内容生成sql
 	 * @Method: generatorByTableData
 	 * @ReturnType String
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月9日下午9:53:03
 	 * @throws
 	 */
@@ -102,7 +102,7 @@ public class SqlGenerator {
 	 * @Description:将model转成sql
 	 * @Method: generator
 	 * @ReturnType String
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月7日下午7:11:51
 	 * @throws
 	 */
@@ -137,7 +137,7 @@ public class SqlGenerator {
 					sql.append(GeneratorUtil.wrapDefaulValue(getValueByIndex(row, rate.getValueIndex())));
 					break;
 				case IS_NULL:
-					sql.append(GeneratorUtil.wrapNotNull());
+					sql.append(GeneratorUtil.wrapNotNull(getValueByIndex(row, rate.getValueIndex())));
 					break;
 			}
 		}
@@ -150,7 +150,7 @@ public class SqlGenerator {
 	 * @Description:获取指定位置的值
 	 * @Method: getValueByIndex
 	 * @ReturnType String
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月7日下午7:40:26
 	 * @throws
 	 */
@@ -163,7 +163,7 @@ public class SqlGenerator {
 	 * @Description:获取指定位置的整数值
 	 * @Method: getIntegerValueByIndex
 	 * @ReturnType int
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月7日下午10:15:06
 	 * @throws
 	 */
@@ -176,7 +176,7 @@ public class SqlGenerator {
 	 * @Description:将jTable中的一行数据转成poi的Row对象
 	 * @Method: trans2Row
 	 * @ReturnType Row
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月9日下午10:10:04
 	 * @throws
 	 */

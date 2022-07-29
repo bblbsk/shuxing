@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 /**
  * @Title: SqlJFrame.java
  * @Description:Frame
- * @Author：daojia
+ * @Author：shuxing
  * @CreateTime：2018年6月10日上午10:37:29
  * @version v1.0
  */
@@ -44,8 +44,8 @@ public class SqlJFrame extends JFrame {
 	private JPanel settingPanel;
 	//生成Sql数据JPanel
 	private JPanel genaratorPanel ;
-	//mysql导入数据 JPanel
-	private JPanel mysqlTemplatePanel;
+	//sql导入数据 JPanel
+	private JPanel sqlTemplatePanel;
 	//接口转JSON JPanel
 	private JPanel jsonTemplatePanel;
 
@@ -130,6 +130,7 @@ public class SqlJFrame extends JFrame {
 
 		JButton getInterfaceTemplate = new JButton("下载模板");
 		getInterfaceTemplate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					//获取文件导出路径，默认为桌面
@@ -171,6 +172,7 @@ public class SqlJFrame extends JFrame {
 
 		JButton jsonButton = new JButton("解析参数");
 		jsonButton.addActionListener(new ActionListener() {
+			@Override
 			@SneakyThrows
 			public void actionPerformed(ActionEvent e) {
 				String paramTypeValue = paramType.getSelectedItem().toString();
@@ -215,14 +217,14 @@ public class SqlJFrame extends JFrame {
 		/**
 		 *加载模板
 		 */
-		mysqlTemplatePanel = new JPanel();
-		mysqlTemplatePanel.setLayout(null);
-		tabbedPane.addTab("⟦二⟧mysql模板", null, mysqlTemplatePanel, null);
+		sqlTemplatePanel = new JPanel();
+		sqlTemplatePanel.setLayout(null);
+		tabbedPane.addTab("⟦二⟧SQL模板", null, sqlTemplatePanel, null);
 
 		final JComboBox<String> excelList = new JComboBox<String>();
 		paramType.setFont(new Font("微软雅黑", Font.PLAIN, 12));
 		excelList.setBounds(342, 222, 227, 37);
-		mysqlTemplatePanel.add(excelList);
+		sqlTemplatePanel.add(excelList);
 
 		JButton chooseExcel = new JButton("上传模板");
 		chooseExcel.setFont(new Font("微软雅黑", Font.PLAIN, 14));
@@ -253,13 +255,14 @@ public class SqlJFrame extends JFrame {
 				}
 			}
 		});
-		mysqlTemplatePanel.add(chooseExcel);
+		sqlTemplatePanel.add(chooseExcel);
 
 		JButton showTemplate = new JButton("数据修改");
 		showTemplate.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		showTemplate.setBounds(449, 327, 137, 55);
+		showTemplate.setBounds(588, 327, 137, 55);
 		// 数据修改
 		showTemplate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (XLSReader.getWb() == null) {
 					JOptionPane.showMessageDialog(null, "请先上传模板!");
@@ -300,10 +303,11 @@ public class SqlJFrame extends JFrame {
 				tabbedPane.setSelectedIndex(2);
 			}
 		});
-		mysqlTemplatePanel.add(showTemplate);
+		sqlTemplatePanel.add(showTemplate);
 
 		JButton getTemplate = new JButton("下载模板");
 		getTemplate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					//获取文件导出路径，默认为桌面
@@ -330,21 +334,22 @@ public class SqlJFrame extends JFrame {
 		});
 		getTemplate.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		getTemplate.setBounds(118, 141, 144, 37);
-		mysqlTemplatePanel.add(getTemplate);
+		sqlTemplatePanel.add(getTemplate);
 
 		JLabel lblNewLabel_2 = new JLabel("说明：获取Excel模板，对模板进行修改后，上传模板，进行sql转换");
 		lblNewLabel_2.setFont(new Font("微软雅黑", Font.PLAIN, 12));
 		lblNewLabel_2.setForeground(Color.RED);
 		lblNewLabel_2.setBounds(118, 78, 498, 24);
-		mysqlTemplatePanel.add(lblNewLabel_2);
+		sqlTemplatePanel.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Excel文件中可生成标签：");
 		lblNewLabel_3.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		lblNewLabel_3.setBounds(118, 222, 169, 37);
-		mysqlTemplatePanel.add(lblNewLabel_3);
+		sqlTemplatePanel.add(lblNewLabel_3);
 
-		JButton button = new JButton("直接生成");
+		JButton button = new JButton("直接生成(Mysql)");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (XLSReader.getWb() == null) {
 					JOptionPane.showMessageDialog(null, "请先上传模板!");
@@ -357,7 +362,7 @@ public class SqlJFrame extends JFrame {
 				message[0] = new JLabel("语句预览");
 
 				JTextArea cb = new JTextArea();
-				SqlGenerator sg = new SqlGenerator();
+				MysqlSqlGenerator sg = new MysqlSqlGenerator();
 
 				// 生成sql
 				cb.setText(sg.generatorByIndex(currSheetIndex));
@@ -384,8 +389,53 @@ public class SqlJFrame extends JFrame {
 			}
 		});
 		button.setFont(new Font("微软雅黑", Font.PLAIN, 14));
-		button.setBounds(240, 327, 137, 55);
-		mysqlTemplatePanel.add(button);
+		button.setBounds(170, 327, 137, 55);
+		sqlTemplatePanel.add(button);
+
+		JButton buttonOracle = new JButton("直接生成(Oracle)");
+		buttonOracle.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (XLSReader.getWb() == null) {
+					JOptionPane.showMessageDialog(null, "请先上传模板!");
+					return;
+				}
+				String currSheet = excelList.getSelectedItem().toString();
+				currSheetIndex = Integer.valueOf(currSheet.split("----")[0].trim());
+				// 展示数据
+				Object[] message = new Object[2];
+				message[0] = new JLabel("语句预览");
+
+				JTextArea cb = new JTextArea();
+				OracleSqlGenerator sg = new OracleSqlGenerator();
+
+				// 生成sql
+				cb.setText(sg.generatorByIndex(currSheetIndex));
+				message[1] = cb;
+
+				// Options
+				String[] options = {"关闭"};
+				int result = JOptionPane.showOptionDialog(SqlJFrame.this,
+						message, // the dialog message array
+						"脚本展示", // the title of the dialog window
+						JOptionPane.DEFAULT_OPTION, // option type
+						JOptionPane.INFORMATION_MESSAGE, // message type
+						null, // optional icon, use null to use the default icon
+						options, // options string array, will be made into
+						// buttons
+						options[0] // option that should be made into a default
+						// button
+				);
+				switch (result) {
+					case 0:
+						//TODO if need todo
+						break;
+				}
+			}
+		});
+		buttonOracle.setFont(new Font("微软雅黑", Font.PLAIN, 14));
+		buttonOracle.setBounds(379, 327, 137, 55);
+		sqlTemplatePanel.add(buttonOracle);
 
 
 		/**
@@ -422,6 +472,7 @@ public class SqlJFrame extends JFrame {
 		final JButton removeRow = new JButton("隐藏选中行");
 		//添加移除一行事件绑定
 		removeRow.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 进行隐藏操作
 				if ("隐藏选中行".equals(removeRow.getText())) {
@@ -454,6 +505,7 @@ public class SqlJFrame extends JFrame {
 		generatorButton.setBounds(645, 30, 115, 36);
 		generatorButton.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (XLSReader.getWb() == null) {
 					JOptionPane.showMessageDialog(null, "请先上传模板!");
@@ -466,7 +518,7 @@ public class SqlJFrame extends JFrame {
 				message[0] = new JLabel("语句预览");
 
 				JTextArea cb = new JTextArea();
-				SqlGenerator sg = new SqlGenerator();
+				MysqlSqlGenerator sg = new MysqlSqlGenerator();
 
 				// 生成sql
 				cb.setText(sg.generatorByTableData(currSheetIndex, table));
@@ -510,6 +562,7 @@ public class SqlJFrame extends JFrame {
 		quitConnect.setFont(new Font("微软雅黑", Font.PLAIN, 14));
 		quitConnect.setBounds(806, 30, 108, 36);
 		quitConnect.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 清除已展示数据
 				for (int i = table.getRowCount(); i > 0 ; i--) {
@@ -524,6 +577,7 @@ public class SqlJFrame extends JFrame {
 
 		JButton copySelect = new JButton("复制选中行");
 		copySelect.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow == -1) {
@@ -550,6 +604,7 @@ public class SqlJFrame extends JFrame {
 
 		JButton btnNewButton_1 = new JButton("删除选中行");
 		btnNewButton_1.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int[] deleteRows = table.getSelectedRows();
 				//删除选中行
@@ -581,6 +636,7 @@ public class SqlJFrame extends JFrame {
 		genaratorPanel.add(addRow);
 		// 添加一条
 		addRow.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 在选中行处添加一行，若没有选中行则在第一行添加
 				int selectedRow = table.getSelectedRow();
@@ -699,6 +755,7 @@ public class SqlJFrame extends JFrame {
 		final JButton connectCheck = new JButton("保存配置");
 		connectCheck.setBounds(351, 500, 155, 45);
 		connectCheck.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 将当前的配置，写入枚举对象中，但不持久化
 				updateSettingDateToEnum();
@@ -743,7 +800,7 @@ public class SqlJFrame extends JFrame {
 	/**
 	 * @Description:更新序号
 	 * @Method: updateRowNum
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月10日上午10:58:11
 	 * @throws
 	 */
@@ -758,7 +815,7 @@ public class SqlJFrame extends JFrame {
 	/**
 	 * @Description:更新配置标签页数据
 	 * @Method: updateSettingData
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月10日上午11:30:02
 	 * @throws
 	 */
@@ -798,7 +855,7 @@ public class SqlJFrame extends JFrame {
 	/**
 	 * @Description:将配置Panel中的值，更新到枚举内存中
 	 * @Method: updateSettingDateToEnum
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月10日下午12:24:25
 	 * @throws
 	 */
@@ -850,7 +907,7 @@ public class SqlJFrame extends JFrame {
 	 * @Description:判断当前index是否已经被使用，通一个index只能用一次
 	 * @Method: checkIndexRepeat
 	 * @ReturnType int
-	 * @Author daojia
+	 * @Author shuxing
 	 * @CreateTime 2018年6月10日下午12:36:24
 	 * @throws
 	 */
