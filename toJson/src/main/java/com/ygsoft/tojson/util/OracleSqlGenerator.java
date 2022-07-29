@@ -1,6 +1,7 @@
  package com.ygsoft.tojson.util;
 
  import com.ygsoft.tojson.util.Constant.SqlConstant;
+ import org.apache.commons.lang3.StringUtils;
  import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  import org.apache.poi.ss.usermodel.*;
 
@@ -124,9 +125,12 @@
       * @throws
       */
      public static int getIntegerValueByIndex(Row row, int index){
-         return Double.valueOf(row.getCell(index).toString()).intValue();
+         String cellValue = row.getCell(index).toString();
+         if (StringUtils.isEmpty(cellValue)) {
+             return 0;
+         }
+         return Double.valueOf(cellValue).intValue();
      }
-
 
      /**
       * @Description:将jTable中的一行数据转成poi的Row对象

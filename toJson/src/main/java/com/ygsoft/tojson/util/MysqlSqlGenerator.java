@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import javax.swing.JTable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -168,7 +169,11 @@ public class MysqlSqlGenerator {
 	 * @throws
 	 */
 	public static int getIntegerValueByIndex(Row row, int index){
-		return Double.valueOf(row.getCell(index).toString()).intValue();
+		String cellValue = row.getCell(index).toString();
+		if (StringUtils.isEmpty(cellValue)) {
+			return 0;
+		}
+		return Double.valueOf(cellValue).intValue();
 	}
 	
 	

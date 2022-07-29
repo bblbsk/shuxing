@@ -570,7 +570,7 @@ public class SqlJFrame extends JFrame {
 				}
 				tableModel.setRowCount(table.getRowCount());
 				// 切换tab
-				tabbedPane.setSelectedIndex(0);
+				tabbedPane.setSelectedIndex(1);
 			}
 		});
 		genaratorPanel.add(quitConnect);
@@ -757,6 +757,11 @@ public class SqlJFrame extends JFrame {
 		connectCheck.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (System.currentTimeMillis() > 0) {
+					// 先关闭修改功能
+					JOptionPane.showMessageDialog(null, "暂时关闭此功能");
+					return;
+				}
 				// 将当前的配置，写入枚举对象中，但不持久化
 				updateSettingDateToEnum();
 			}
