@@ -175,8 +175,11 @@ public class SqlJFrame extends JFrame {
 			@Override
 			@SneakyThrows
 			public void actionPerformed(ActionEvent e) {
+				if (paramType.getSelectedItem() == null) {
+					JOptionPane.showMessageDialog(null, "请先上传接口文件!");
+					return;
+				}
 				String paramTypeValue = paramType.getSelectedItem().toString();
-				System.out.println("paramTypeValue = " + paramTypeValue);
 				if (!paramTypeValue.equals("输入参数")) {
 					JOptionPane.showMessageDialog(null, "目前仅支持解析入参!");
 					return;
