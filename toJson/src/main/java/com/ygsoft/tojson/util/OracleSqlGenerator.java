@@ -18,7 +18,7 @@
 /**
 * OracleSqlGenerator
 * @className OracleSqlGenerator.java
-* @author caishixian
+* @author liyongmei
 * @date 2022/7/29 16:17
 * @version V1.0
 */
@@ -28,8 +28,8 @@
       * @Description:通过Excel文件，生成指定的sheetIndex表
       * @Method: generatorByIndex
       * @ReturnType String
-      * @Author shuxing
-      * @CreateTime 2018年6月9日下午9:49:55
+      * @Author liyongmei
+      * @CreateTime 2022年6月9日下午9:49:55
       * @throws
       */
      public String generatorByIndex(int index){
@@ -58,8 +58,8 @@
       * @Description:将model转成sql
       * @Method: generator
       * @ReturnType String
-      * @Author shuxing
-      * @CreateTime 2018年6月7日下午7:11:51
+      * @Author liyongmei
+      * @CreateTime 2022年6月7日下午7:11:51
       * @throws
       */
      public static String generator(String tableName, Row row, List<String> comments){
@@ -107,8 +107,8 @@
       * @Description:获取指定位置的值
       * @Method: getValueByIndex
       * @ReturnType String
-      * @Author shuxing
-      * @CreateTime 2018年6月7日下午7:40:26
+      * @Author liyongmei
+      * @CreateTime 2022年6月7日下午7:40:26
       * @throws
       */
      public static String getValueByIndex(Row row, int index){
@@ -120,8 +120,8 @@
       * @Description:获取指定位置的整数值
       * @Method: getIntegerValueByIndex
       * @ReturnType int
-      * @Author shuxing
-      * @CreateTime 2018年6月7日下午10:15:06
+      * @Author liyongmei
+      * @CreateTime 2022年6月7日下午10:15:06
       * @throws
       */
      public static int getIntegerValueByIndex(Row row, int index){
@@ -136,8 +136,8 @@
       * @Description:将jTable中的一行数据转成poi的Row对象
       * @Method: trans2Row
       * @ReturnType Row
-      * @Author shuxing
-      * @CreateTime 2018年6月9日下午10:10:04
+      * @Author liyongmei
+      * @CreateTime 2022年6月9日下午10:10:04
       * @throws
       */
      public Row trans2Row(int rowIndex, JTable jTable){

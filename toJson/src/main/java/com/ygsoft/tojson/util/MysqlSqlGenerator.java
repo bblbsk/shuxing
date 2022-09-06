@@ -25,15 +25,15 @@ import com.ygsoft.tojson.util.XLSReader;
 /**
  * @Title: SqlGenerator.java
  * @Description:语句生成器
- * @Author：shuxing
- * @CreateTime：2018年6月10日上午10:34:34
+ * @Author：liyongmei
+ * @CreateTime：2022年6月10日上午10:34:34
  * @version v1.0
  */
 public class MysqlSqlGenerator {
 
 	public static void main(String[] args) throws IOException {
 
-		Workbook wb = new HSSFWorkbook(new FileInputStream(new File("C:\\Users\\shuxing\\Desktop\\数据库设计.xls")));  
+		Workbook wb = new HSSFWorkbook(new FileInputStream(new File("C:\\Users\\liyongmei\\Desktop\\数据库设计.xls")));  
 		
 		Sheet sheetAt = wb.getSheetAt(0);
 		
@@ -54,8 +54,8 @@ public class MysqlSqlGenerator {
 	 * @Description:通过Excel文件，生成指定的sheetIndex表 
 	 * @Method: generatorByIndex
 	 * @ReturnType String
-	 * @Author shuxing
-	 * @CreateTime 2018年6月9日下午9:49:55
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月9日下午9:49:55
 	 * @throws
 	 */
 	public String generatorByIndex(int index){
@@ -76,8 +76,8 @@ public class MysqlSqlGenerator {
 	 * @Description:通过JTable内容生成sql
 	 * @Method: generatorByTableData
 	 * @ReturnType String
-	 * @Author shuxing
-	 * @CreateTime 2018年6月9日下午9:53:03
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月9日下午9:53:03
 	 * @throws
 	 */
 	public String generatorByTableData(int index, JTable jTable){
@@ -103,8 +103,8 @@ public class MysqlSqlGenerator {
 	 * @Description:将model转成sql
 	 * @Method: generator
 	 * @ReturnType String
-	 * @Author shuxing
-	 * @CreateTime 2018年6月7日下午7:11:51
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月7日下午7:11:51
 	 * @throws
 	 */
 	public static String generator(Row row){
@@ -151,8 +151,8 @@ public class MysqlSqlGenerator {
 	 * @Description:获取指定位置的值
 	 * @Method: getValueByIndex
 	 * @ReturnType String
-	 * @Author shuxing
-	 * @CreateTime 2018年6月7日下午7:40:26
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月7日下午7:40:26
 	 * @throws
 	 */
 	public static String getValueByIndex(Row row, int index){
@@ -164,8 +164,8 @@ public class MysqlSqlGenerator {
 	 * @Description:获取指定位置的整数值
 	 * @Method: getIntegerValueByIndex
 	 * @ReturnType int
-	 * @Author shuxing
-	 * @CreateTime 2018年6月7日下午10:15:06
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月7日下午10:15:06
 	 * @throws
 	 */
 	public static int getIntegerValueByIndex(Row row, int index){
@@ -181,8 +181,8 @@ public class MysqlSqlGenerator {
 	 * @Description:将jTable中的一行数据转成poi的Row对象
 	 * @Method: trans2Row
 	 * @ReturnType Row
-	 * @Author shuxing
-	 * @CreateTime 2018年6月9日下午10:10:04
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月9日下午10:10:04
 	 * @throws
 	 */
 	public Row trans2Row(int rowIndex, JTable jTable){

@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 /**
 * 列映射注解
 * @className ExcelFiledColumnMapper.java
-* @author caishixian
+* @author liyongmei
 * @date 2022/6/28 10:27
 * @version V1.0
 */

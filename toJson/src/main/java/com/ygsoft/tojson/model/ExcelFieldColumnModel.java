@@ -5,7 +5,7 @@ import lombok.Data;
 /**
 * 列
 * @className ExcelFieldColumnModel.java
-* @author caishixian
+* @author liyongmei
 * @date 2022/6/28 10:33
 * @version V1.0
 */

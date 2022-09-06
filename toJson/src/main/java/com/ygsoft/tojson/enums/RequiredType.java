@@ -5,7 +5,7 @@ import lombok.Data;
 /**
 * 是否必填
 * @className ParamType.java
-* @author caishixian
+* @author liyongmei
 * @date 2022/6/28 10:56
 * @version V1.0
 */

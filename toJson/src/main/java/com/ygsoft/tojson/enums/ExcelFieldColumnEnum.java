@@ -11,7 +11,7 @@ import java.util.Map;
 /**
 * 数据目录排序字段列名称
 * @className DataDirectoryOrderColumnEnum.java
-* @author caishixian
+* @author liyongmei
 * @date 2022/6/23 10:33
 * @version V1.0
 */
@@ -59,7 +59,7 @@ public enum ExcelFieldColumnEnum {
     * 通过模型名称获取对应的列名称
     * @param name
     * @return java.lang.String
-    * @author caishixian
+    * @author liyongmei
     * @date 2022/6/23 10:39
     */
     public static String getFieldNameByName(String name) {

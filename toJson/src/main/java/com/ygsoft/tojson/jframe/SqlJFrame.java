@@ -33,8 +33,8 @@ import java.util.logging.Logger;
 /**
  * @Title: SqlJFrame.java
  * @Description:Frame
- * @Author：shuxing
- * @CreateTime：2018年6月10日上午10:37:29
+ * @Author：liyongmei
+ * @CreateTime：2022年6月10日上午10:37:29
  * @version v1.0
  */
 @SuppressWarnings("serial")
@@ -808,8 +808,8 @@ public class SqlJFrame extends JFrame {
 	/**
 	 * @Description:更新序号
 	 * @Method: updateRowNum
-	 * @Author shuxing
-	 * @CreateTime 2018年6月10日上午10:58:11
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月10日上午10:58:11
 	 * @throws
 	 */
 	private void updateRowNum(){
@@ -823,8 +823,8 @@ public class SqlJFrame extends JFrame {
 	/**
 	 * @Description:更新配置标签页数据
 	 * @Method: updateSettingData
-	 * @Author shuxing
-	 * @CreateTime 2018年6月10日上午11:30:02
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月10日上午11:30:02
 	 * @throws
 	 */
 	@SuppressWarnings("unchecked")
@@ -863,8 +863,8 @@ public class SqlJFrame extends JFrame {
 	/**
 	 * @Description:将配置Panel中的值，更新到枚举内存中
 	 * @Method: updateSettingDateToEnum
-	 * @Author shuxing
-	 * @CreateTime 2018年6月10日下午12:24:25
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月10日下午12:24:25
 	 * @throws
 	 */
 	@SuppressWarnings("unchecked")
@@ -915,8 +915,8 @@ public class SqlJFrame extends JFrame {
 	 * @Description:判断当前index是否已经被使用，通一个index只能用一次
 	 * @Method: checkIndexRepeat
 	 * @ReturnType int
-	 * @Author shuxing
-	 * @CreateTime 2018年6月10日下午12:36:24
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月10日下午12:36:24
 	 * @throws
 	 */
 	public int checkIndexRepeat(List<Integer> indexs, int currIndex){

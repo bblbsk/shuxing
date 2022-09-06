@@ -6,8 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @Title: GeneratorUtil.java
  * @Description:
- * @Author：shuxing
- * @CreateTime：2018年6月6日下午10:20:10
+ * @Author：liyongmei
+ * @CreateTime：2022年6月6日下午10:20:10
  * @version v1.0
  */
 public class GeneratorUtil {
@@ -59,8 +59,8 @@ public class GeneratorUtil {
 	 * @Description:`filed`
 	 * @Method: wrapField
 	 * @ReturnType String
-	 * @Author shuxing
-	 * @CreateTime 2018年6月6日下午10:19:57
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月6日下午10:19:57
 	 * @throws
 	 */
 	public static String wrapField(String filed){
@@ -71,7 +71,7 @@ public class GeneratorUtil {
 	* Oracle field
 	* @param filed
 	* @return java.lang.String
-	* @author caishixian
+	* @author liyongmei
 	* @date 2022/7/29 16:27
 	*/
 	public static String wrapOracleField(String filed){
@@ -82,8 +82,8 @@ public class GeneratorUtil {
 	 * @Description:'commnet'
 	 * @Method: wrapComment
 	 * @ReturnType String
-	 * @Author shuxing
-	 * @CreateTime 2018年6月6日下午10:22:17
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月6日下午10:22:17
 	 * @throws
 	 */
 	public static String wrapComment(String comment){
@@ -94,7 +94,7 @@ public class GeneratorUtil {
 	* Oracle comment
 	* @param comment
 	* @return java.lang.String
-	* @author caishixian
+	* @author liyongmei
 	* @date 2022/7/29 16:30
 	*/
 	public static String wrapOracleComment(String tableName, String fieldName, String comment){
@@ -106,8 +106,8 @@ public class GeneratorUtil {
 	 * @Description: varchar(100)
 	 * @Method: wrapFiledType
 	 * @ReturnType String
-	 * @Author shuxing
-	 * @CreateTime 2018年6月6日下午10:24:22
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月6日下午10:24:22
 	 * @throws
 	 */
 	public static String wrapFiledType(String type, int length){
@@ -118,8 +118,8 @@ public class GeneratorUtil {
 	 * @Description: varchar(100)
 	 * @Method: wrapDefaulValue
 	 * @ReturnType String
-	 * @Author shuxing
-	 * @CreateTime 2018年6月6日下午10:24:22
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月6日下午10:24:22
 	 * @throws
 	 */
 	public static String wrapDefaulValue(String defaultValue){
@@ -133,8 +133,8 @@ public class GeneratorUtil {
 	 * @Description: varchar(100)
 	 * @Method: wrapNotNull
 	 * @ReturnType String
-	 * @Author shuxing
-	 * @CreateTime 2018年6月6日下午10:24:22
+	 * @Author liyongmei
+	 * @CreateTime 2022年6月6日下午10:24:22
 	 * @throws
 	 */
 	public static String wrapNotNull(String notNull){

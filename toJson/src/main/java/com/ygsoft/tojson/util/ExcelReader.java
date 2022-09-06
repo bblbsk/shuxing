@@ -7,17 +7,14 @@ import com.ygsoft.tojson.enums.ExcelFieldColumnEnum;
 import com.ygsoft.tojson.enums.ParamType;
 import com.ygsoft.tojson.model.ExcelFieldColumnModel;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,7 +22,7 @@ import java.util.stream.Collectors;
 /**
 * 读取Excel
 * @className ExcelReader.java
-* @author caishixian
+* @author liyongmei
 * @date 2022/6/28 11:14
 * @version V1.0
 */
@@ -104,7 +101,7 @@ public class ExcelReader {
     * 维护数据
     * @param jsonObject
     * @return void
-    * @author caishixian
+    * @author liyongmei
     * @date 2022/6/28 23:22
     */
     private static void putValue(JSONObject jsonObject, ExcelFieldColumnModel model) {

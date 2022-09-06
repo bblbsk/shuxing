@@ -10,8 +10,8 @@ import com.ygsoft.tojson.jframe.SqlJFrame;
 /**
  * @Title: SqlStartLoader.java
  * @Description:启动类
- * @Author：shuxing
- * @CreateTime：2018年6月10日上午9:23:33
+ * @Author：liyongmei
+ * @CreateTime：2022年6月10日上午9:23:33
  * @version v1.0
  */
 public class StartLoader {

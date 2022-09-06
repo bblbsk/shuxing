@@ -12,7 +12,7 @@ import javax.swing.JTextField;
   * @ClassName: JCalenderTextField
   * @Description: 格式化传入的时间值
   * @author-csx
-  * @date 2017年6月8日 下午10:11:28
+  * @date 2022年6月8日 下午10:11:28
   *
   */
 @SuppressWarnings("serial")
